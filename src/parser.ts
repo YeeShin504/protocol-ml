@@ -35,35 +35,98 @@ export interface Entities {
   numAnnotations: number;
 }
 
-const DEFAULT_SETTINGS = {
-  arrowSize: 10,
-  crossSize: 12,
-  thickArrowSize: 30,
+export interface Settings {
+  arrowHeadSize: number;
+  dropCrossSize: number;
+  thickArrowThickness: number;
+  labelOffset: number;
+  corruptStartRatio: number;
+  dropStartRatio: number;
+
+  squiggleSize: number;
+  squiggleCount: number;
+
+  timeTickInterval: number;
+  participantSpacing: number;
+  participantLabelHeight: number;
+  annotationWidth: number;
+
+  participantFontSize: number;
+  messageFontSize: number;
+
+  paddingX: number;
+  paddingY: number;
+
+  showGrid: boolean;
+  showTimeTicks: boolean;
+  timeUnit: string;
+}
+
+const DEFAULT_SETTINGS: Settings = {
+  arrowHeadSize: 10,
+  dropCrossSize: 12,
+  thickArrowThickness: 40,
   labelOffset: 10,
-  corruptStart: 0.85,
-  dropStart: 0.85,
+  corruptStartRatio: 0.85,
+  dropStartRatio: 0.85,
 
   squiggleSize: 20,
   squiggleCount: 2,
 
-  messageSpacingY: 40,
-  participantSpacingX: 240,
+  timeTickInterval: 40,
+  participantSpacing: 240,
   participantLabelHeight: 30,
-  annotationSpacingX: 80,
+  annotationWidth: 80,
 
   participantFontSize: 20,
   messageFontSize: 15,
 
   paddingX: 30,
   paddingY: 20,
-  
+
   showGrid: false,
   showTimeTicks: false,
+  timeUnit: "",
 };
 
-export type Settings = {
-  [key: string]: number | boolean | undefined;
-} & typeof DEFAULT_SETTINGS;
+function parseString(val: string): string {
+  const v = val.trim();
+  // Strip quotes if present
+  if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+    return v.slice(1, -1);
+  }
+  return v;
+}
+
+function parseNumber(val: string): number | null {
+  const v = parseString(val);
+  if (v === "") return null;
+
+  // Percentage: "85%" -> 0.85
+  if (v.endsWith("%")) {
+    const numPart = v.slice(0, -1);
+    const n = Number(numPart);
+    if (numPart !== "" && !isNaN(n)) return n / 100;
+  }
+
+  // Pixels: "20px" -> 20
+  if (v.endsWith("px")) {
+    const numPart = v.slice(0, -2);
+    const n = Number(numPart);
+    if (numPart !== "" && !isNaN(n)) return n;
+  }
+
+  // Strict number coercion
+  const n = Number(v);
+  return isNaN(n) ? null : n;
+}
+
+function parseBoolean(val: string): boolean | null {
+  const v = parseString(val).toLowerCase();
+  if (v === "true") return true;
+  if (v === "false") return false;
+  return null;
+}
 
 export function parse(src: string): Entities {
   const settings: Settings = { ...DEFAULT_SETTINGS };
@@ -75,32 +138,51 @@ export function parse(src: string): Entities {
   const lines = src.split("\n");
 
   for (let line of lines) {
+    // Strip inline comments, respecting quotes
+    line = line.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|\/\/.*$/g, (m: string, g1: string | undefined) => g1 ? g1 : "").trim();
 
-    line = line.trim();
-
-    if (!line || line.startsWith("//")) continue;
+    if (!line) continue;
 
     // overwrite default settings
-    if (line.startsWith("def")) {
+    if (line.startsWith("def ")) {
+      // Use regex to capture the full value which might contain spaces and quotes
+      const match = line.match(/^def\s+([\w.]+)\s+(.+)$/);
+      if (!match) continue;
 
-      const [, name, value] = line.split(/\s+/);
+      const name = match[1];
+      const rawValue = match[2];
 
-      if (/^true$/i.test(value)) {
-        settings[name] = true;
-      } else if (/^false$/i.test(value)) {
-        settings[name] = false;
-      } else {
-        settings[name] = parseFloat(value);
+      const normalizedName = name.toLowerCase();
+      // find exact match (case-insensitive)
+      const targetKey = Object.keys(DEFAULT_SETTINGS).find(k => k.toLowerCase() === normalizedName) as keyof Settings | undefined;
+
+      if (targetKey) {
+        const defaultValue = DEFAULT_SETTINGS[targetKey];
+
+        // Use specialized parsers based on the target type
+        if (typeof defaultValue === "number") {
+          const val = parseNumber(rawValue);
+          if (val !== null) (settings as any)[targetKey] = val;
+        } else if (typeof defaultValue === "boolean") {
+          const val = parseBoolean(rawValue);
+          if (val !== null) (settings as any)[targetKey] = val;
+        } else if (typeof defaultValue === "string") {
+          (settings as any)[targetKey] = parseString(rawValue);
+        }
       }
 
       continue;
     }
 
     // participants
-    // /^participant\s+((?:["'][^"'@]+["'])|[^\s"'@]+)\s+([^\s"'@]+)/
-    if (line.startsWith("participant")) {
+    // Example: participant Client c1
+    // Example: participant "Web Server" ws
+    if (line.startsWith("participant ")) {
+      const match = line.match(/^participant\s+(?:(?:"([^"]+)")|(\S+))\s+(\w+)/);
+      if (!match) continue;
 
-      const [, name, alias] = line.split(/\s+/);
+      const name = match[1] || match[2];
+      const alias = match[3];
 
       participants.push({
         name,
@@ -113,7 +195,7 @@ export function parse(src: string): Entities {
 
     // annotations
     const annMatch = line.match(
-      /^(\w+)(?:\s*@([\d.]+))?\s*([<>])\s*"(.+)"/
+      /^(\w+)(?:\s*@([\d.%px]+))?\s*([<>])\s*"(.+)"/
     );
 
     if (annMatch) {
@@ -122,7 +204,7 @@ export function parse(src: string): Entities {
       actions.push({
         type: "annotation",
         participant: annMatch[1],
-        height: annMatch[2] ? parseFloat(annMatch[2]) : undefined,
+        height: annMatch[2] ? (parseNumber(annMatch[2]) ?? undefined) : undefined,
         side: annMatch[3] === "<" ? "left" : "right",
         text: annMatch[4]
       });
@@ -132,7 +214,7 @@ export function parse(src: string): Entities {
 
     // arrows
     const arrowMatch = line.match(
-      /^(\w+)(?:\s*@([\d.]+))?\s*(->|=>|~>|-x)\s*(\w+)(?:\s*@([\d.]+))?(?:\s*:\s*"(.+)")?/
+      /^(\w+)(?:\s*@([\d.%px]+))?\s*(->|=>|~>|-x)\s*(\w+)(?:\s*@([\d.%px]+))?(?:\s*:\s*"(.+)")?/
     );
 
     if (arrowMatch) {
@@ -147,10 +229,10 @@ export function parse(src: string): Entities {
       actions.push({
         type: "arrow",
         from: arrowMatch[1],
-        start: arrowMatch[2] ? parseFloat(arrowMatch[2]) : undefined,
+        start: arrowMatch[2] ? (parseNumber(arrowMatch[2]) ?? undefined) : undefined,
         arrowType: typeMap[arrowMatch[3]],
         to: arrowMatch[4],
-        end: arrowMatch[5] ? parseFloat(arrowMatch[5]) : undefined,
+        end: arrowMatch[5] ? (parseNumber(arrowMatch[5]) ?? undefined) : undefined,
         label: arrowMatch[6]
       });
 

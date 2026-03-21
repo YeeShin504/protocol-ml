@@ -18,6 +18,79 @@ header {
     border-bottom: 1px solid #3e3e42;
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resizer {
+    width: 6px;
+    background: #1e1e1e;
+    cursor: col-resize;
+    position: relative;
+    z-index: 100;
+    border-left: 1px solid #3e3e42;
+    border-right: 1px solid #3e3e42;
+    transition: background 0.2s;
+}
+
+.resizer:hover, .resizer.dragging {
+    background: #0e639c;
+}
+
+.toggle-arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2d2d2d;
+    border: 1px solid #3e3e42;
+    color: #858585;
+    width: 20px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+}
+
+.toggle-arrow:hover {
+    background: #3e3e42;
+    color: #ffffff;
+    border-color: #0e639c;
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+#panel-reference {
+    flex: 0 0 280px;
+    background: #252526;
+    transition: flex-basis 0.3s ease-in-out;
+}
+
+#panel-reference.collapsed {
+    flex: 0 0 0px !important;
+    overflow: hidden;
+}
+
+#panel-editor {
+    flex: 1 1 0;
+}
+
+#panel-preview {
+    flex: 1 1 0;
+}
+
 h1 {
     font-size: 1.5rem;
     font-weight: 600;
@@ -35,11 +108,102 @@ main {
     height: calc(100vh - 80px);
 }
 
-.panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid #3e3e42;
+.reference-content {
+    background: #252526;
+    padding: 1.25rem;
+    overflow-y: auto;
+}
+
+.search-container {
+    padding: 0.75rem 1.25rem;
+    background: #252526;
+    border-bottom: 1px solid #3e3e42;
+}
+
+#refSearch {
+    width: 100%;
+    background: #3c3c3c;
+    border: 1px solid #3e3e42;
+    color: #cccccc;
+    padding: 0.4rem 0.75rem;
+    border-radius: 3px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#refSearch:focus {
+    border-color: #0e639c;
+}
+
+.loading {
+    color: #858585;
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
+.ref-group h4 {
+    color: #569cd6;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 1.5rem 0 0.75rem 0;
+}
+
+.ref-group:first-child h4 {
+    margin-top: 0;
+}
+
+.ref-item {
+    background: #2d2d2d;
+    border: 1px solid #3e3e42;
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.2s;
+}
+
+.ref-item:hover {
+    border-color: #454545;
+}
+
+.ref-title {
+    font-size: 0.85rem;
+    color: #cccccc;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+}
+
+.ref-syntax {
+    display: block;
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 0.75rem;
+    font-variant-ligatures: normal;
+    background: #1e1e1e;
+    padding: 0.4rem 0.6rem;
+    color: #ce9178;
+    border-radius: 4px;
+    margin-bottom: 0.6rem;
+    border: 1px solid #3e3e42;
+}
+
+.try-btn-small {
+    background: transparent;
+    border: 1px solid #3e3e42;
+    color: #858585;
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+.try-btn-small:hover {
+    background: #3e3e42;
+    color: #ffffff;
+    border-color: #0e639c;
 }
 
 .panel:last-child {
@@ -108,12 +272,16 @@ main {
 }
 
 .protocol-ml-wrapper {
-    display: inline-block;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 svg {
     max-width: 100%;
-    height: auto;
+    max-height: 100%;
 }
 
 @media (max-width: 768px) {
@@ -170,7 +338,10 @@ svg {
     color: #b5cea8;
 }
 
-/* identifiers */
+/* identifiers/aliases */
+.cm-pml-alias {
+    color: #4ec9b0;
+}
 .cm-pml-arrow-normal {
     color: #4fc1ff;
     font-weight: bold;
@@ -214,4 +385,36 @@ svg {
 .cm-pml-comment {
     color: #6a9955;
     font-style: italic;
+}
+
+/* CodeMirror Hint Theme */
+.CodeMirror-hints {
+    position: absolute;
+    z-index: 10;
+    overflow: hidden;
+    list-style: none;
+    margin: 0;
+    padding: 2px;
+    background: #252526;
+    border: 1px solid #454545;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    color: #d4d4d4;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.CodeMirror-hint {
+    margin: 0;
+    padding: 4px 8px;
+    border-radius: 2px;
+    cursor: pointer;
+    color: #d4d4d4;
+}
+
+li.CodeMirror-hint-active {
+    background: #094771;
+    color: white;
 }
