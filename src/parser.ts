@@ -138,10 +138,10 @@ export function parse(src: string): Entities {
   const lines = src.split("\n");
 
   for (let line of lines) {
+    // Strip inline comments, respecting quotes
+    line = line.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|\/\/.*$/g, (m: string, g1: string | undefined) => g1 ? g1 : "").trim();
 
-    line = line.trim();
-
-    if (!line || line.startsWith("//")) continue;
+    if (!line) continue;
 
     // overwrite default settings
     if (line.startsWith("def ")) {

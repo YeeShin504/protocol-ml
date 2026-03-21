@@ -337,7 +337,10 @@ svg {
     color: #b5cea8;
 }
 
-/* identifiers */
+/* identifiers/aliases */
+.cm-pml-alias {
+    color: #4ec9b0;
+}
 .cm-pml-arrow-normal {
     color: #4fc1ff;
     font-weight: bold;
@@ -381,4 +384,36 @@ svg {
 .cm-pml-comment {
     color: #6a9955;
     font-style: italic;
+}
+
+/* CodeMirror Hint Theme */
+.CodeMirror-hints {
+    position: absolute;
+    z-index: 10;
+    overflow: hidden;
+    list-style: none;
+    margin: 0;
+    padding: 2px;
+    background: #252526;
+    border: 1px solid #454545;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    color: #d4d4d4;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.CodeMirror-hint {
+    margin: 0;
+    padding: 4px 8px;
+    border-radius: 2px;
+    cursor: pointer;
+    color: #d4d4d4;
+}
+
+li.CodeMirror-hint-active {
+    background: #094771;
+    color: white;
 }

@@ -226,6 +226,10 @@ b => a : "thick reply"
 a @2 < "left label @2"
 b @5 > "right label @5"`;
 
+CodeMirror.commands.autocomplete = function(cm) {
+    cm.showHint({ hint: CodeMirror.hint["protocol-ml"] });
+};
+
 const editor = window.CodeMirror(document.getElementById('editor'), {
     value: INITIAL_CODE,
     mode: 'protocol-ml',
@@ -233,7 +237,39 @@ const editor = window.CodeMirror(document.getElementById('editor'), {
     autofocus: true,
     tabSize: 2,
     indentUnit: 2,
-    viewportMargin: Infinity
+    indentWithTabs: false,
+    viewportMargin: Infinity,
+    extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Ctrl-/": "toggleComment",
+        "Cmd-/": "toggleComment",
+        "Tab": (cm) => {
+            if (cm.state.completionActive) {
+                cm.state.completionActive.pick();
+            } else {
+                const cursor = cm.getCursor();
+                const line = cm.getLine(cursor.line);
+                const before = line.slice(0, cursor.ch);
+                // If it's just whitespace before the cursor, indent. 
+                // Otherwise try to complete.
+                if (/^\s*$/.test(before)) {
+                    return CodeMirror.Pass;
+                }
+                cm.execCommand("autocomplete");
+            }
+        }
+    },
+    hintOptions: {
+        direction: "above",
+        completeSingle: false,
+        alignWithWord: true
+    }
+});
+
+// Auto-trigger hints while typing (VS Code style)
+editor.on("inputRead", (cm, change) => {
+    if (change.text[0] === " " || change.text[0] === "\n") return;
+    cm.showHint({ hint: CodeMirror.hint["protocol-ml"] });
 });
 
 let currentSVG = '';
