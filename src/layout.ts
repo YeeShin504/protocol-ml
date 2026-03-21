@@ -26,20 +26,33 @@ export interface AnnotationPos {
   text: string;
 }
 
+export interface TickPos {
+  type: "tick";
+  y: number;
+  label: string;
+}
+
+export interface TimeAxisPos {
+  type: "timeAxis";
+  x: number;
+  y1: number;
+  y2: number;
+}
+
 export interface Diagram {
   settings: Settings;
   width: number;
   height: number;
-  draws: (ParticipantPos | ArrowPos | AnnotationPos)[];
+  draws: (ParticipantPos | ArrowPos | AnnotationPos | TickPos | TimeAxisPos)[];
 }
 
 export function resolveLayout(entities: Entities): Diagram {
   const { settings, participants, actions, numAnnotations } = entities;
 
   // 1. check if need extra spacing for annotations
-
+  let timeTickMargin = settings.showTimeTicks ? 60 : 0;
   let width = settings.participantSpacingX * (participants.length - 1)
-    + 2 * settings.paddingX;
+    + 2 * settings.paddingX + timeTickMargin;
 
   if (numAnnotations > 0)
     width += 2 * settings.annotationSpacingX;
@@ -51,9 +64,12 @@ export function resolveLayout(entities: Entities): Diagram {
   // 3. resolve participant x position
 
   const participantsX = new Map(); // map alias -> x coord
+  let timeAxisX = settings.paddingX + (numAnnotations > 0 ? settings.annotationSpacingX : 0) + (timeTickMargin > 0 ? 20 : 0);
   {
-    // recomputing width, but whatever
-    let x = settings.paddingX + (numAnnotations > 0 ? settings.annotationSpacingX : 0);
+    let x = timeAxisX + timeTickMargin;
+    if (timeTickMargin === 0) {
+      x = settings.paddingX + (numAnnotations > 0 ? settings.annotationSpacingX : 0);
+    }
     for (const participant of participants) {
       participantsX.set(participant.alias, x);
       x += settings.participantSpacingX;
@@ -63,7 +79,7 @@ export function resolveLayout(entities: Entities): Diagram {
   // 4. resolve arrows and annotations
 
   let counter = 0, counterMax = counter;
-  const draws: (ParticipantPos | ArrowPos | AnnotationPos)[] = [];
+  const draws: (ParticipantPos | ArrowPos | AnnotationPos | TickPos | TimeAxisPos)[] = [];
 
   for (const action of actions) { // actions should be in order :D
     switch (action.type) {
@@ -74,6 +90,8 @@ export function resolveLayout(entities: Entities): Diagram {
 
         if (action.start) {
           counter = action.start;
+          startY = counter;
+          endY = counter + 1;
         }
 
         if (action.end) {
@@ -133,6 +151,25 @@ export function resolveLayout(entities: Entities): Diagram {
       name: p.name,
     };
   });
+
+  if (settings.showTimeTicks || settings.showGrid) {
+    for (let i = 0; i <= counterMax; i++) {
+      draws.push({
+        type: "tick",
+        y: oldHeight + settings.messageSpacingY + i * settings.messageSpacingY,
+        label: `${i}`,
+      });
+    }
+  }
+
+  if (settings.showTimeTicks) {
+    draws.push({
+      type: "timeAxis",
+      x: timeAxisX,
+      y1: oldHeight,
+      y2: height,
+    });
+  }
 
   height += settings.paddingY;
 
