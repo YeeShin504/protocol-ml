@@ -51,16 +51,16 @@ export function resolveLayout(entities: Entities): Diagram {
 
   // 1. check if need extra spacing for annotations
   let timeTickMargin = settings.showTimeTicks ? 60 : 0;
-  let annMargin = numAnnotations > 0 ? settings.annotationSpacingX : 0;
+  let annMargin = numAnnotations > 0 ? settings.annotationWidth : 0;
   
   let timeAxisX = settings.paddingX + timeTickMargin;
   let startX = timeAxisX + (settings.showTimeTicks ? 20 : 0) + annMargin;
 
-  let width = startX + settings.participantSpacingX * (participants.length - 1) + annMargin + settings.paddingX;
+  let width = startX + settings.participantSpacing * (participants.length - 1) + annMargin + settings.paddingX;
 
   // 2. figure out top spacing for participant label and padding
 
-  let height = settings.paddingY + settings.participantLabelHeight + settings.messageSpacingY; // last one is a hack
+  let height = settings.paddingY + settings.participantLabelHeight + settings.timeTickInterval; // last one is a hack
 
   // 3. resolve participant x position
 
@@ -69,7 +69,7 @@ export function resolveLayout(entities: Entities): Diagram {
     let x = startX;
     for (const participant of participants) {
       participantsX.set(participant.alias, x);
-      x += settings.participantSpacingX;
+      x += settings.participantSpacing;
     }
   }
 
@@ -98,14 +98,16 @@ export function resolveLayout(entities: Entities): Diagram {
         draws.push({
           type: action.type,
           x1: participantsX.get(action.from),
-          y1: height + startY * settings.messageSpacingY,
+          y1: height + startY * settings.timeTickInterval,
           x2: participantsX.get(action.to),
-          y2: height + endY * settings.messageSpacingY,
+          y2: height + endY * settings.timeTickInterval,
           arrowType: action.arrowType,
           label: action.label,
         });
 
-        counter++;
+        const thicknessRatio = action.arrowType === "thick" ? settings.thickArrowThickness / settings.timeTickInterval : 0;
+        counterMax = Math.max(counterMax, startY + thicknessRatio, endY + thicknessRatio);
+        counter = endY + thicknessRatio;
         break;
 
       case "annotation":
@@ -118,26 +120,27 @@ export function resolveLayout(entities: Entities): Diagram {
         draws.push({
           type: action.type,
           x: participantsX.get(action.participant) - ((action.side == "left" ? 1 : -1) * settings.labelOffset),
-          y: height + y * settings.messageSpacingY,
+          y: height + y * settings.timeTickInterval,
           align: action.side == "left" ? "right" : "left", // if on left, use right align
           text: action.text,
         });
 
+        counterMax = Math.max(counterMax, y);
         break;
 
       // default:
       //   // should not reach here
       //   console.error(`[protocol-ml] Errror: invalid action type ${action.type}`);
     }
-    counterMax = Math.max(counterMax, counter);
   }
 
   // 5. resolve height of participant lifetimes
 
   // draws.reverse(); // TBC: might look better if one rendered above
 
-  const oldHeight = height - settings.messageSpacingY; // another hack
-  height += (counterMax + 1) * settings.messageSpacingY; // add some extra length to the lifetime
+  const oldHeight = height - settings.timeTickInterval; // another hack
+  const totalTicks = Math.ceil(counterMax);
+  height += (totalTicks + 1) * settings.timeTickInterval; // add some extra length to the lifetime
 
   const lifelines: ParticipantPos[] = participants.map(p => {
     return {
@@ -150,10 +153,10 @@ export function resolveLayout(entities: Entities): Diagram {
   });
 
   if (settings.showTimeTicks || settings.showGrid) {
-    for (let i = 0; i <= counterMax; i++) {
+    for (let i = 0; i <= totalTicks; i++) {
       draws.push({
         type: "tick",
-        y: oldHeight + settings.messageSpacingY + i * settings.messageSpacingY,
+        y: oldHeight + settings.timeTickInterval + i * settings.timeTickInterval,
         label: `${i}`,
       });
     }

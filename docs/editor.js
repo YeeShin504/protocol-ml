@@ -6,8 +6,8 @@ const copyCodeBtn = document.getElementById('copyCode');
 const copyPNGBtn = document.getElementById('copyPNG');
 const copySVGBtn = document.getElementById('copySVG');
 
-const INITIAL_CODE = `def messageSpacing 20px
-def participantSpacing 160px
+const INITIAL_CODE = `def timeTickInterval 40px
+def participantSpacing 240px
 def showTimeTicks true
 def showGrid true
 

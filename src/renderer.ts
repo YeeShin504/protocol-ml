@@ -18,7 +18,7 @@ function drawTimeAxis(settings: Settings, axis: TimeAxisPos, ticks: TickPos[]): 
   fill="white"
   font-size="${settings.participantFontSize}"
 >
-  Time
+  Time ${settings.timeUnit}
 </text>
 <line stroke="#aaaaaa" stroke-width="3" x1="${axis.x}" y1="${axis.y1}" x2="${axis.x}" y2="${axis.y2}" />`;
 
@@ -83,7 +83,7 @@ function drawAnnotation(settings: Settings, annotation: AnnotationPos): string {
   
   const charWidth = settings.messageFontSize * 0.6;
   const marginOffset = settings.labelOffset;
-  const rectWidth = settings.annotationSpacingX - marginOffset;
+  const rectWidth = settings.annotationWidth - marginOffset;
   const maxChars = Math.max(1, Math.floor(rectWidth / charWidth));
   
   const lines = wrapText(text, maxChars);
@@ -129,14 +129,14 @@ function drawArrow(settings: Settings, arrow: ArrowPos): string {
   let arrowsvg = '';
 
   // arrow head
-  const baseX = x2 - ux * settings.arrowSize;
-  const baseY = y2 - uy * settings.arrowSize;
+  const baseX = x2 - ux * settings.arrowHeadSize;
+  const baseY = y2 - uy * settings.arrowHeadSize;
 
-  const leftX = baseX + px * settings.arrowSize * 0.5;
-  const leftY = baseY + py * settings.arrowSize * 0.5;
+  const leftX = baseX + px * settings.arrowHeadSize * 0.5;
+  const leftY = baseY + py * settings.arrowHeadSize * 0.5;
 
-  const rightX = baseX - px * settings.arrowSize * 0.5;
-  const rightY = baseY - py * settings.arrowSize * 0.5;
+  const rightX = baseX - px * settings.arrowHeadSize * 0.5;
+  const rightY = baseY - py * settings.arrowHeadSize * 0.5;
 
   switch (arrowType) {
     case "normal":
@@ -150,23 +150,23 @@ function drawArrow(settings: Settings, arrow: ArrowPos): string {
 
     case "dropped":
       // cross
-      const dropX = x1 + ux * len * settings.dropStart;
-      const dropY = y1 + uy * len * settings.dropStart;
+      const dropX = x1 + ux * len * settings.dropStartRatio;
+      const dropY = y1 + uy * len * settings.dropStartRatio;
 
       arrowsvg = `
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
   <line x1="${x1}" y1="${y1}" x2="${dropX}" y2="${dropY}" />
-  <line stroke="red" x1="${dropX - settings.crossSize * 0.5}" y1="${dropY - settings.crossSize * 0.5}" x2="${dropX + settings.crossSize * 0.5}" y2="${dropY + settings.crossSize * 0.5}" />
-  <line stroke="red" x1="${dropX - settings.crossSize * 0.5}" y1="${dropY + settings.crossSize * 0.5}" x2="${dropX + settings.crossSize * 0.5}" y2="${dropY - settings.crossSize * 0.5}" />
+  <line stroke="red" x1="${dropX - settings.dropCrossSize * 0.5}" y1="${dropY - settings.dropCrossSize * 0.5}" x2="${dropX + settings.dropCrossSize * 0.5}" y2="${dropY + settings.dropCrossSize * 0.5}" />
+  <line stroke="red" x1="${dropX - settings.dropCrossSize * 0.5}" y1="${dropY + settings.dropCrossSize * 0.5}" x2="${dropX + settings.dropCrossSize * 0.5}" y2="${dropY - settings.dropCrossSize * 0.5}" />
 </g>`;
       break;
 
     case "corrupt":
       // draw the squiggly
-      const waveX = x1 + ux * len * settings.corruptStart;
-      const waveY = y1 + uy * len * settings.corruptStart;
+      const waveX = x1 + ux * len * settings.corruptStartRatio;
+      const waveY = y1 + uy * len * settings.corruptStartRatio;
 
-      const waveLen = (len * (1 - settings.corruptStart)) - 2 * settings.arrowSize;
+      const waveLen = (len * (1 - settings.corruptStartRatio)) - 2 * settings.arrowHeadSize;
       const waveInterval = waveLen / (4 * settings.squiggleCount);
 
 
@@ -207,13 +207,13 @@ function drawArrow(settings: Settings, arrow: ArrowPos): string {
     case "thick":
       arrowsvg = `
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
-  <polygon stroke="none" fill="#ffffff44" points="${x1},${y1} ${x2},${y2} ${x2},${y2 + settings.thickArrowSize} ${x1},${y1 + settings.thickArrowSize}" />
+  <polygon stroke="none" fill="#ffffff44" points="${x1},${y1} ${x2},${y2} ${x2},${y2 + settings.thickArrowThickness} ${x1},${y1 + settings.thickArrowThickness}" />
   <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />
   <line x1="${x2}" y1="${y2}" x2="${leftX}" y2="${leftY}" />
   <line x1="${x2}" y1="${y2}" x2="${rightX}" y2="${rightY}" />
-  <line x1="${x1}" y1="${y1 + settings.thickArrowSize}" x2="${x2}" y2="${y2 + settings.thickArrowSize}" />
-  <line x1="${x2}" y1="${y2 + settings.thickArrowSize}" x2="${leftX}" y2="${leftY + settings.thickArrowSize}" />
-  <line x1="${x2}" y1="${y2 + settings.thickArrowSize}" x2="${rightX}" y2="${rightY + settings.thickArrowSize}" />
+  <line x1="${x1}" y1="${y1 + settings.thickArrowThickness}" x2="${x2}" y2="${y2 + settings.thickArrowThickness}" />
+  <line x1="${x2}" y1="${y2 + settings.thickArrowThickness}" x2="${leftX}" y2="${leftY + settings.thickArrowThickness}" />
+  <line x1="${x2}" y1="${y2 + settings.thickArrowThickness}" x2="${rightX}" y2="${rightY + settings.thickArrowThickness}" />
 </g>`;
       break;
 
@@ -240,7 +240,7 @@ function drawArrow(settings: Settings, arrow: ArrowPos): string {
 
     const lx = mx - px * offset;
     const ly = (arrowType === "thick")
-      ? my + (direction * py * settings.thickArrowSize / 2)
+      ? my + (direction * py * settings.thickArrowThickness / 2)
       : my - py * offset;
 
 
