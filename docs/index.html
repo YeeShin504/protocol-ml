@@ -11,12 +11,32 @@
 
 <body>
     <header>
-        <h1>protocol-ml</h1>
-        <p class="subtitle">Interactive Protocol Diagram Editor</p>
+        <div class="header-content">
+            <div>
+                <h1>protocol-ml</h1>
+                <p class="subtitle">Interactive Protocol Diagram Editor</p>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <div class="panel">
+    <main id="main-container">
+        <div class="panel help-panel" id="panel-reference">
+            <div class="panel-header">
+                <span class="panel-title">Reference</span>
+            </div>
+            <div class="search-container">
+                <input type="text" id="refSearch" placeholder="Search reference..." autocomplete="off">
+            </div>
+            <div id="reference-list" class="panel-content reference-content">
+                <div class="loading">Loading reference...</div>
+            </div>
+        </div>
+
+        <div class="resizer" id="resizer-ref">
+            <button id="toggleReference" class="toggle-arrow">◀</button>
+        </div>
+
+        <div class="panel" id="panel-editor">
             <div class="panel-header">
                 <span class="panel-title">Code Editor</span>
                 <button class="copy-btn" id="copyCode">Copy Code</button>
@@ -26,7 +46,9 @@
             </div>
         </div>
 
-        <div class="panel">
+        <div class="resizer" id="resizer-preview"></div>
+
+        <div class="panel" id="panel-preview">
             <div class="panel-header">
                 <span class="panel-title">SVG Preview</span>
                 <div>
@@ -41,6 +63,7 @@
     </main>
 
     <script src="https://unpkg.com/codemirror@5.65.13/lib/codemirror.js"></script>
+    <script src="https://unpkg.com/codemirror@5.65.13/addon/runmode/runmode.js"></script>
     <script src="./syntax-highlight.js"></script>
     <script type="module" src="./editor.js"></script>
 </body>

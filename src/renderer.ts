@@ -268,7 +268,7 @@ export function renderSVG(entities: Entities): string {
   let svg: string[] = [];
 
   svg.push(
-    `<svg class="protocol-diagram" xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">`
+    `<svg class="protocol-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">`
   );
 
   svg.push(
