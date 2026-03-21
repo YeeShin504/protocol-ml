@@ -57,20 +57,55 @@ function drawParticipant(settings: Settings, participant: ParticipantPos): strin
 <line stroke="#aaaaaa" x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" />`;
 }
 
+function wrapText(text: string, maxChars: number): string[] {
+  const words = text.split(" ");
+  const lines: string[] = [];
+  let currentLine = "";
+
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    if (currentLine.length === 0) {
+      currentLine = word;
+    } else if (currentLine.length + 1 + word.length <= maxChars) {
+      currentLine += " " + word;
+    } else {
+      lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+  
+  return lines;
+}
+
 function drawAnnotation(settings: Settings, annotation: AnnotationPos): string {
   const { x, y, align, text } = annotation;
-  // TODO: handle align and wrapping
+  
+  const charWidth = settings.messageFontSize * 0.6;
+  const marginOffset = settings.labelOffset;
+  const rectWidth = settings.annotationSpacingX - marginOffset;
+  const maxChars = Math.max(1, Math.floor(rectWidth / charWidth));
+  
+  const lines = wrapText(text, maxChars);
+  const lineHeight = settings.messageFontSize * 1.2;
+  const startY = y;
+  
+  const anchor = align === "left" ? "start" : align === "right" ? "end" : "middle";
+  
+  const tspans = lines.map((line, i) => 
+    `<tspan x="${x}" y="${startY + i * lineHeight}">${line}</tspan>`
+  ).join("\n");
+
   return `
 <text
-  x="${x}"
-  y="${y}"
-  text-anchor="middle"
+  xml:space="preserve"
+  text-anchor="${anchor}"
   dominant-baseline="middle"
   font-family="JetBrains Mono, monospace"
   fill="white"
   font-size="${settings.messageFontSize}"
 >
-  ${text}
+  ${tspans}
 </text>`
 }
 

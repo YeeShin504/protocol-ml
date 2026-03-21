@@ -51,25 +51,22 @@ export function resolveLayout(entities: Entities): Diagram {
 
   // 1. check if need extra spacing for annotations
   let timeTickMargin = settings.showTimeTicks ? 60 : 0;
-  let width = settings.participantSpacingX * (participants.length - 1)
-    + 2 * settings.paddingX + timeTickMargin;
+  let annMargin = numAnnotations > 0 ? settings.annotationSpacingX : 0;
+  
+  let timeAxisX = settings.paddingX + timeTickMargin;
+  let startX = timeAxisX + (settings.showTimeTicks ? 20 : 0) + annMargin;
 
-  if (numAnnotations > 0)
-    width += 2 * settings.annotationSpacingX;
+  let width = startX + settings.participantSpacingX * (participants.length - 1) + annMargin + settings.paddingX;
 
   // 2. figure out top spacing for participant label and padding
 
-  let height = settings.paddingX + settings.participantLabelHeight + settings.messageSpacingY; // last one is a hack
+  let height = settings.paddingY + settings.participantLabelHeight + settings.messageSpacingY; // last one is a hack
 
   // 3. resolve participant x position
 
   const participantsX = new Map(); // map alias -> x coord
-  let timeAxisX = settings.paddingX + (numAnnotations > 0 ? settings.annotationSpacingX : 0) + (timeTickMargin > 0 ? 20 : 0);
   {
-    let x = timeAxisX + timeTickMargin;
-    if (timeTickMargin === 0) {
-      x = settings.paddingX + (numAnnotations > 0 ? settings.annotationSpacingX : 0);
-    }
+    let x = startX;
     for (const participant of participants) {
       participantsX.set(participant.alias, x);
       x += settings.participantSpacingX;
@@ -120,7 +117,7 @@ export function resolveLayout(entities: Entities): Diagram {
 
         draws.push({
           type: action.type,
-          x: participantsX.get(action.participant) - ((action.side == "left" ? 1 : -1) * (settings.annotationSpacingX / 2)),
+          x: participantsX.get(action.participant) - ((action.side == "left" ? 1 : -1) * settings.labelOffset),
           y: height + y * settings.messageSpacingY,
           align: action.side == "left" ? "right" : "left", // if on left, use right align
           text: action.text,
