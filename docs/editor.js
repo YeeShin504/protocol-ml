@@ -205,6 +205,7 @@ if (refSearch) {
 
 const INITIAL_CODE = `def timeTickInterval 40px
 def participantSpacing 240px
+def timeUnit /ms
 def showTimeTicks true
 def showGrid true
 

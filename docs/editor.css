@@ -177,8 +177,9 @@ main {
 
 .ref-syntax {
     display: block;
-    font-family: inherit;
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
     font-size: 0.75rem;
+    font-variant-ligatures: normal;
     background: #1e1e1e;
     padding: 0.4rem 0.6rem;
     color: #ce9178;
