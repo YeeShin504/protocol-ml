@@ -1,5 +1,43 @@
 import { Entities, Settings } from "./parser";
-import { AnnotationPos, ArrowPos, ParticipantPos, resolveLayout } from "./layout";
+import { AnnotationPos, ArrowPos, ParticipantPos, TickPos, TimeAxisPos, resolveLayout } from "./layout";
+
+function drawGrid(settings: Settings, ticks: TickPos[], width: number): string {
+  return ticks.map(tick =>
+    `<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="${tick.y}" x2="${width}" y2="${tick.y}" />`
+  ).join("\n");
+}
+
+function drawTimeAxis(settings: Settings, axis: TimeAxisPos, ticks: TickPos[]): string {
+  const header = `
+<text
+  x="${axis.x}"
+  y="${axis.y1 - settings.participantLabelHeight / 2}"
+  text-anchor="middle"
+  dominant-baseline="middle"
+  font-family="JetBrains Mono, monospace"
+  fill="white"
+  font-size="${settings.participantFontSize}"
+>
+  Time
+</text>
+<line stroke="#aaaaaa" stroke-width="3" x1="${axis.x}" y1="${axis.y1}" x2="${axis.x}" y2="${axis.y2}" />`;
+
+  const tickElements = ticks.map(tick => `
+<line stroke="#aaaaaa" x1="${axis.x - 5}" y1="${tick.y}" x2="${axis.x + 5}" y2="${tick.y}" />
+<text
+  x="${axis.x - 10}"
+  y="${tick.y}"
+  text-anchor="end"
+  dominant-baseline="middle"
+  font-family="JetBrains Mono, monospace"
+  fill="white"
+  font-size="${settings.messageFontSize}"
+>
+  ${tick.label}
+</text>`).join("\n");
+
+  return `${header}${tickElements}`;
+}
 
 function drawParticipant(settings: Settings, participant: ParticipantPos): string {
   const { x, y1, y2, name } = participant;
@@ -201,6 +239,17 @@ export function renderSVG(entities: Entities): string {
   svg.push(
     `<rect width="100%" height="100%" fill="#333333"/>`
   );
+
+  const ticks = draws.filter((d): d is TickPos => d.type === "tick");
+  const timeAxis = draws.find((d): d is TimeAxisPos => d.type === "timeAxis");
+
+  if (settings.showGrid) {
+    svg.push(drawGrid(settings, ticks, width));
+  }
+
+  if (settings.showTimeTicks && timeAxis) {
+    svg.push(drawTimeAxis(settings, timeAxis, ticks));
+  }
 
   for (const draw of draws) {
     switch (draw.type) {

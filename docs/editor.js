@@ -8,6 +8,8 @@ const copySVGBtn = document.getElementById('copySVG');
 
 const INITIAL_CODE = `def messageSpacing 20px
 def participantSpacing 160px
+def showTimeTicks true
+def showGrid true
 
 participant Alice a
 participant Bob b

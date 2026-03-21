@@ -56,12 +56,17 @@ const DEFAULT_SETTINGS = {
 
   paddingX: 30,
   paddingY: 20,
+  
+  showGrid: false,
+  showTimeTicks: false,
 };
 
-export type Settings = typeof DEFAULT_SETTINGS;
+export type Settings = {
+  [key: string]: number | boolean | undefined;
+} & typeof DEFAULT_SETTINGS;
 
 export function parse(src: string): Entities {
-  const settings = DEFAULT_SETTINGS;
+  const settings: Settings = { ...DEFAULT_SETTINGS };
 
   const participants: Participant[] = [];
   const actions: (Arrow | Annotation)[] = [];
@@ -80,7 +85,13 @@ export function parse(src: string): Entities {
 
       const [, name, value] = line.split(/\s+/);
 
-      settings[name] = parseFloat(value);
+      if (/^true$/i.test(value)) {
+        settings[name] = true;
+      } else if (/^false$/i.test(value)) {
+        settings[name] = false;
+      } else {
+        settings[name] = parseFloat(value);
+      }
 
       continue;
     }
