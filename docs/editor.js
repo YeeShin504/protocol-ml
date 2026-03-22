@@ -83,6 +83,7 @@ const REFERENCE_DATA = [
         items: [
             { title: "Normal Arrow", syntax: 'a -> b : "label"', example: 'a -> b : "Request"' },
             { title: "Thick Arrow", syntax: 'a => b : "label"', example: 'a => b : "Big Data"' },
+            { title: "Variable Thickness", syntax: 'a =>[thickness] b : "label"', example: 'a =>[0.5] b : "Thin"' },
             { title: "Corrupt Arrow", syntax: 'a ~> b : "label"', example: 'a ~> b : "Fragmented"' },
             { title: "Dropped Message", syntax: 'a -x b : "label"', example: 'a -x b : "Timeout"' },
             { title: "Time Offsets", syntax: 'a @1.5 -> b @1', example: 'a @1.5 -> b @1 : "Relative Time"' }
@@ -92,7 +93,7 @@ const REFERENCE_DATA = [
         group: "Arrow Styles",
         items: [
             { title: "Arrow Head Size", syntax: 'def arrowHeadSize 10px', example: 'def arrowHeadSize 15px' },
-            { title: "Thick Thickness", syntax: 'def thickArrowThickness 40px', example: 'def thickArrowThickness 20px' },
+            { title: "Thick Ratio", syntax: 'def thickArrowThickness 1.0', example: 'def thickArrowThickness 0.5' },
             { title: "Label Offset", syntax: 'def labelOffset 10px', example: 'def labelOffset 20px' },
             { title: "Message Font Size", syntax: 'def messageFontSize 15px', example: 'def messageFontSize 18px' }
         ]
@@ -221,8 +222,8 @@ b ~> a : "corrupted reply"
 a -x b : "dropped"
 b -x a : "dropped reply"
 
-a => b : "thick"
-b => a : "thick reply"
+a => b : "thick reply"
+b =>[1.5] a : "thicker reply"
 
 a @2 < "left label @2"
 b @5 > "right label @5"`;

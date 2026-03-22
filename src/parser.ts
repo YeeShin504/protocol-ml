@@ -17,6 +17,7 @@ export interface Arrow {
   start?: number;
   end?: number;
   arrowType: ArrowType;
+  thicknessRatio?: number;
   label?: string;
 }
 
@@ -65,7 +66,7 @@ export interface Settings {
 const DEFAULT_SETTINGS: Settings = {
   arrowHeadSize: 10,
   dropCrossSize: 12,
-  thickArrowThickness: 40,
+  thickArrowThickness: 1.0,
   labelOffset: 10,
   corruptStartRatio: 0.85,
   dropStartRatio: 0.85,
@@ -214,7 +215,7 @@ export function parse(src: string): Entities {
 
     // arrows
     const arrowMatch = line.match(
-      /^(\w+)(?:\s*@([\d.%px]+))?\s*(->|=>|~>|-x)\s*(\w+)(?:\s*@([\d.%px]+))?(?:\s*:\s*"(.+)")?/
+      /^(\w+)(?:\s*@([\d.%px]+))?\s*(->|=>|~>|-x)(?:\[([\d.]+)\])?\s*(\w+)(?:\s*@([\d.%px]+))?(?:\s*:\s*"(.+)")?/
     );
 
     if (arrowMatch) {
@@ -231,9 +232,10 @@ export function parse(src: string): Entities {
         from: arrowMatch[1],
         start: arrowMatch[2] ? (parseNumber(arrowMatch[2]) ?? undefined) : undefined,
         arrowType: typeMap[arrowMatch[3]],
-        to: arrowMatch[4],
-        end: arrowMatch[5] ? (parseNumber(arrowMatch[5]) ?? undefined) : undefined,
-        label: arrowMatch[6]
+        thicknessRatio: arrowMatch[4] ? parseFloat(arrowMatch[4]) : undefined,
+        to: arrowMatch[5],
+        end: arrowMatch[6] ? (parseNumber(arrowMatch[6]) ?? undefined) : undefined,
+        label: arrowMatch[7]
       });
 
       continue;

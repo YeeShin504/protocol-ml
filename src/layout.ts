@@ -15,6 +15,7 @@ export interface ArrowPos {
   x2: number;
   y2: number;
   arrowType: ArrowType;
+  thickness: number;
   label?: string;
 }
 
@@ -95,6 +96,12 @@ export function resolveLayout(entities: Entities): Diagram {
           endY = action.end;
         }
 
+        const currentThicknessRatio = (action.arrowType === "thick") 
+          ? (action.thicknessRatio ?? settings.thickArrowThickness)
+          : 0;
+        
+        const thickness = currentThicknessRatio * settings.timeTickInterval;
+
         draws.push({
           type: action.type,
           x1: participantsX.get(action.from),
@@ -102,12 +109,12 @@ export function resolveLayout(entities: Entities): Diagram {
           x2: participantsX.get(action.to),
           y2: height + endY * settings.timeTickInterval,
           arrowType: action.arrowType,
+          thickness,
           label: action.label,
         });
 
-        const thicknessRatio = action.arrowType === "thick" ? settings.thickArrowThickness / settings.timeTickInterval : 0;
-        counterMax = Math.max(counterMax, startY + thicknessRatio, endY + thicknessRatio);
-        counter = endY + thicknessRatio;
+        counterMax = Math.max(counterMax, startY + currentThicknessRatio, endY + currentThicknessRatio);
+        counter++;
         break;
 
       case "annotation":

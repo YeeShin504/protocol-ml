@@ -110,7 +110,7 @@ function drawAnnotation(settings: Settings, annotation: AnnotationPos): string {
 }
 
 function drawArrow(settings: Settings, arrow: ArrowPos): string {
-  const { x1, y1, x2, y2, arrowType, label } = arrow;
+  const { x1, y1, x2, y2, arrowType, thickness, label } = arrow;
 
   const dx = x2 - x1;
   const dy = y2 - y1;
@@ -207,13 +207,13 @@ function drawArrow(settings: Settings, arrow: ArrowPos): string {
     case "thick":
       arrowsvg = `
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
-  <polygon stroke="none" fill="#ffffff44" points="${x1},${y1} ${x2},${y2} ${x2},${y2 + settings.thickArrowThickness} ${x1},${y1 + settings.thickArrowThickness}" />
+  <polygon stroke="none" fill="#ffffff44" points="${x1},${y1} ${x2},${y2} ${x2},${y2 + thickness} ${x1},${y1 + thickness}" />
   <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />
   <line x1="${x2}" y1="${y2}" x2="${leftX}" y2="${leftY}" />
   <line x1="${x2}" y1="${y2}" x2="${rightX}" y2="${rightY}" />
-  <line x1="${x1}" y1="${y1 + settings.thickArrowThickness}" x2="${x2}" y2="${y2 + settings.thickArrowThickness}" />
-  <line x1="${x2}" y1="${y2 + settings.thickArrowThickness}" x2="${leftX}" y2="${leftY + settings.thickArrowThickness}" />
-  <line x1="${x2}" y1="${y2 + settings.thickArrowThickness}" x2="${rightX}" y2="${rightY + settings.thickArrowThickness}" />
+  <line x1="${x1}" y1="${y1 + thickness}" x2="${x2}" y2="${y2 + thickness}" />
+  <line x1="${x2}" y1="${y2 + thickness}" x2="${leftX}" y2="${leftY + thickness}" />
+  <line x1="${x2}" y1="${y2 + thickness}" x2="${rightX}" y2="${rightY + thickness}" />
 </g>`;
       break;
 
@@ -240,7 +240,7 @@ function drawArrow(settings: Settings, arrow: ArrowPos): string {
 
     const lx = mx - px * offset;
     const ly = (arrowType === "thick")
-      ? my + (direction * py * settings.thickArrowThickness / 2)
+      ? my + (direction * py * thickness / 2)
       : my - py * offset;
 
 
