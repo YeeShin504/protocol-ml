@@ -215,7 +215,7 @@ export function parse(src: string): Entities {
 
     // arrows
     const arrowMatch = line.match(
-      /^(\w+)(?:\s*@([\d.%px]+))?\s*(->|=>|~>|-x)(?:\[([\d.]+)\])?\s*(\w+)(?:\s*@([\d.%px]+))?(?:\s*:\s*"(.+)")?/
+      /^(\w+)(?:\s*@([\d.%px]+))?\s*(->|=>|~>|-x)(?:\[([\d.]+)\])?\s*(?:@([\d.%px]+)\s+)?(\w+)(?:\s*@([\d.%px]+))?(?:\s*:\s*"(.+)")?/
     );
 
     if (arrowMatch) {
@@ -233,9 +233,9 @@ export function parse(src: string): Entities {
         start: arrowMatch[2] ? (parseNumber(arrowMatch[2]) ?? undefined) : undefined,
         arrowType: typeMap[arrowMatch[3]],
         thicknessRatio: arrowMatch[4] ? parseFloat(arrowMatch[4]) : undefined,
-        to: arrowMatch[5],
-        end: arrowMatch[6] ? (parseNumber(arrowMatch[6]) ?? undefined) : undefined,
-        label: arrowMatch[7]
+        to: arrowMatch[6],
+        end: (arrowMatch[5] || arrowMatch[7]) ? (parseNumber(arrowMatch[5] || arrowMatch[7]) ?? undefined) : undefined,
+        label: arrowMatch[8]
       });
 
       continue;

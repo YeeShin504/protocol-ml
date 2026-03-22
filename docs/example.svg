@@ -1,19 +1,19 @@
-<svg class="protocol-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 550" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+<svg class="protocol-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 536 550" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
 <rect width="100%" height="100%" fill="#333333"/>
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="90" x2="540" y2="90" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="130" x2="540" y2="130" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="170" x2="540" y2="170" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="210" x2="540" y2="210" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="250" x2="540" y2="250" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="290" x2="540" y2="290" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="330" x2="540" y2="330" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="370" x2="540" y2="370" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="410" x2="540" y2="410" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="450" x2="540" y2="450" />
-<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="490" x2="540" y2="490" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="90" x2="536" y2="90" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="130" x2="536" y2="130" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="170" x2="536" y2="170" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="210" x2="536" y2="210" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="250" x2="536" y2="250" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="290" x2="536" y2="290" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="330" x2="536" y2="330" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="370" x2="536" y2="370" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="410" x2="536" y2="410" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="450" x2="536" y2="450" />
+<line stroke="#aaaaaa" stroke-dasharray="2" x1="0" y1="490" x2="536" y2="490" />
 
 <text
-  x="90"
+  x="78"
   y="35"
   text-anchor="middle"
   dominant-baseline="middle"
@@ -23,10 +23,10 @@
 >
   Time /ms
 </text>
-<line stroke="#aaaaaa" stroke-width="3" x1="90" y1="50" x2="90" y2="530" />
-<line stroke="#aaaaaa" x1="85" y1="90" x2="95" y2="90" />
+<line stroke="#aaaaaa" stroke-width="3" x1="78" y1="50" x2="78" y2="530" />
+<line stroke="#aaaaaa" x1="73" y1="90" x2="83" y2="90" />
 <text
-  x="80"
+  x="68"
   y="90"
   text-anchor="end"
   dominant-baseline="middle"
@@ -37,9 +37,9 @@
   0
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="130" x2="95" y2="130" />
+<line stroke="#aaaaaa" x1="73" y1="130" x2="83" y2="130" />
 <text
-  x="80"
+  x="68"
   y="130"
   text-anchor="end"
   dominant-baseline="middle"
@@ -50,9 +50,9 @@
   1
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="170" x2="95" y2="170" />
+<line stroke="#aaaaaa" x1="73" y1="170" x2="83" y2="170" />
 <text
-  x="80"
+  x="68"
   y="170"
   text-anchor="end"
   dominant-baseline="middle"
@@ -63,9 +63,9 @@
   2
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="210" x2="95" y2="210" />
+<line stroke="#aaaaaa" x1="73" y1="210" x2="83" y2="210" />
 <text
-  x="80"
+  x="68"
   y="210"
   text-anchor="end"
   dominant-baseline="middle"
@@ -76,9 +76,9 @@
   3
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="250" x2="95" y2="250" />
+<line stroke="#aaaaaa" x1="73" y1="250" x2="83" y2="250" />
 <text
-  x="80"
+  x="68"
   y="250"
   text-anchor="end"
   dominant-baseline="middle"
@@ -89,9 +89,9 @@
   4
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="290" x2="95" y2="290" />
+<line stroke="#aaaaaa" x1="73" y1="290" x2="83" y2="290" />
 <text
-  x="80"
+  x="68"
   y="290"
   text-anchor="end"
   dominant-baseline="middle"
@@ -102,9 +102,9 @@
   5
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="330" x2="95" y2="330" />
+<line stroke="#aaaaaa" x1="73" y1="330" x2="83" y2="330" />
 <text
-  x="80"
+  x="68"
   y="330"
   text-anchor="end"
   dominant-baseline="middle"
@@ -115,9 +115,9 @@
   6
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="370" x2="95" y2="370" />
+<line stroke="#aaaaaa" x1="73" y1="370" x2="83" y2="370" />
 <text
-  x="80"
+  x="68"
   y="370"
   text-anchor="end"
   dominant-baseline="middle"
@@ -128,9 +128,9 @@
   7
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="410" x2="95" y2="410" />
+<line stroke="#aaaaaa" x1="73" y1="410" x2="83" y2="410" />
 <text
-  x="80"
+  x="68"
   y="410"
   text-anchor="end"
   dominant-baseline="middle"
@@ -141,9 +141,9 @@
   8
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="450" x2="95" y2="450" />
+<line stroke="#aaaaaa" x1="73" y1="450" x2="83" y2="450" />
 <text
-  x="80"
+  x="68"
   y="450"
   text-anchor="end"
   dominant-baseline="middle"
@@ -154,9 +154,9 @@
   9
 </text>
 
-<line stroke="#aaaaaa" x1="85" y1="490" x2="95" y2="490" />
+<line stroke="#aaaaaa" x1="73" y1="490" x2="83" y2="490" />
 <text
-  x="80"
+  x="68"
   y="490"
   text-anchor="end"
   dominant-baseline="middle"
@@ -168,7 +168,7 @@
 </text>
 
 <text
-  x="190"
+  x="176"
   y="35"
   text-anchor="middle"
   dominant-baseline="middle"
@@ -178,10 +178,10 @@
 >
   Alice
 </text>
-<line stroke="#aaaaaa" x1="190" y1="50" x2="190" y2="530" />
+<line stroke="#aaaaaa" x1="176" y1="50" x2="176" y2="530" />
 
 <text
-  x="430"
+  x="416"
   y="35"
   text-anchor="middle"
   dominant-baseline="middle"
@@ -191,20 +191,20 @@
 >
   Bob
 </text>
-<line stroke="#aaaaaa" x1="430" y1="50" x2="430" y2="530" />
+<line stroke="#aaaaaa" x1="416" y1="50" x2="416" y2="530" />
 
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
-  <line x1="190" y1="90" x2="430" y2="130" />
-  <line x1="430" y1="130" x2="419.3140658251518" y2="133.28797974610714" />
-  <line x1="430" y1="130" x2="420.9580556982053" y2="123.42404050778569" />
+  <line x1="176" y1="90" x2="416" y2="130" />
+  <line x1="416" y1="130" x2="405.3140658251518" y2="133.28797974610714" />
+  <line x1="416" y1="130" x2="406.9580556982053" y2="123.42404050778569" />
 </g>
 <text
-  x="311.64398987305356"
+  x="297.64398987305356"
   y="100.13606076167856"
   text-anchor="middle"
   dominant-baseline="middle"
   font-family="JetBrains Mono, monospace"
-  transform="rotate(9.462322208025617 311.64398987305356 100.13606076167856)"
+  transform="rotate(9.462322208025617 297.64398987305356 100.13606076167856)"
   fill="white"
   font-size="15"
 >
@@ -212,17 +212,17 @@
 </text>
 
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
-  <line x1="430" y1="130" x2="190" y2="170" />
-  <line x1="190" y1="170" x2="199.04194430179467" y2="163.4240405077857" />
-  <line x1="190" y1="170" x2="200.68593417484823" y2="173.28797974610714" />
+  <line x1="416" y1="130" x2="176" y2="170" />
+  <line x1="176" y1="170" x2="185.04194430179467" y2="163.4240405077857" />
+  <line x1="176" y1="170" x2="186.68593417484823" y2="173.28797974610714" />
 </g>
 <text
-  x="308.35601012694644"
+  x="294.35601012694644"
   y="140.13606076167855"
   text-anchor="middle"
   dominant-baseline="middle"
   font-family="JetBrains Mono, monospace"
-  transform="rotate(350.5376777919744 308.35601012694644 140.13606076167855)"
+  transform="rotate(350.5376777919744 294.35601012694644 140.13606076167855)"
   fill="white"
   font-size="15"
 >
@@ -230,19 +230,19 @@
 </text>
 
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <line x1="190" y1="170" x2="394" y2="204" />
-  <path stroke="orange" d="M 394 204 L 397.6780050634732 194.47506329341516 L 398.4580556982054 214.88094683353128 L 405.81406582515183 195.8310734203616 L 406.594116459884 216.23695696047773 L 412.3061367137769 207.0510227856295 L 420.13606076167855 208.35601012694642" />
-  <line stroke="orange" x1="420.13606076167855" y1="208.35601012694642" x2="430" y2="210" />
-  <line stroke="orange" x1="430" y1="210" x2="419.3140658251518" y2="213.28797974610714" />
-  <line stroke="orange" x1="430" y1="210" x2="420.9580556982053" y2="203.4240405077857" />
+  <line x1="176" y1="170" x2="380" y2="204" />
+  <path stroke="orange" d="M 380 204 L 383.6780050634732 194.47506329341516 L 384.4580556982054 214.88094683353128 L 391.81406582515183 195.8310734203616 L 392.594116459884 216.23695696047773 L 398.3061367137769 207.0510227856295 L 406.13606076167855 208.35601012694642" />
+  <line stroke="orange" x1="406.13606076167855" y1="208.35601012694642" x2="416" y2="210" />
+  <line stroke="orange" x1="416" y1="210" x2="405.3140658251518" y2="213.28797974610714" />
+  <line stroke="orange" x1="416" y1="210" x2="406.9580556982053" y2="203.4240405077857" />
 </g>
 <text
-  x="311.64398987305356"
+  x="297.64398987305356"
   y="180.13606076167855"
   text-anchor="middle"
   dominant-baseline="middle"
   font-family="JetBrains Mono, monospace"
-  transform="rotate(9.462322208025617 311.64398987305356 180.13606076167855)"
+  transform="rotate(9.462322208025617 297.64398987305356 180.13606076167855)"
   fill="white"
   font-size="15"
 >
@@ -250,19 +250,19 @@
 </text>
 
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <line x1="430" y1="210" x2="226" y2="244" />
-  <path stroke="orange" d="M 226 244 L 225.60997468263395 254.20294177005806 L 218.2539645556875 235.15306835688838 L 217.4739139209554 255.5589518970045 L 210.11790379400895 236.50907848383483 L 207.69386328622326 247.0510227856295 L 199.86393923832145 248.35601012694642" />
-  <line stroke="orange" x1="199.86393923832145" y1="248.35601012694642" x2="190" y2="250" />
-  <line stroke="orange" x1="190" y1="250" x2="199.04194430179467" y2="243.4240405077857" />
-  <line stroke="orange" x1="190" y1="250" x2="200.68593417484823" y2="253.28797974610714" />
+  <line x1="416" y1="210" x2="212" y2="244" />
+  <path stroke="orange" d="M 212 244 L 211.60997468263395 254.20294177005806 L 204.2539645556875 235.15306835688838 L 203.4739139209554 255.5589518970045 L 196.11790379400895 236.50907848383483 L 193.69386328622326 247.0510227856295 L 185.86393923832145 248.35601012694642" />
+  <line stroke="orange" x1="185.86393923832145" y1="248.35601012694642" x2="176" y2="250" />
+  <line stroke="orange" x1="176" y1="250" x2="185.04194430179467" y2="243.4240405077857" />
+  <line stroke="orange" x1="176" y1="250" x2="186.68593417484823" y2="253.28797974610714" />
 </g>
 <text
-  x="308.35601012694644"
+  x="294.35601012694644"
   y="220.13606076167855"
   text-anchor="middle"
   dominant-baseline="middle"
   font-family="JetBrains Mono, monospace"
-  transform="rotate(350.5376777919744 308.35601012694644 220.13606076167855)"
+  transform="rotate(350.5376777919744 294.35601012694644 220.13606076167855)"
   fill="white"
   font-size="15"
 >
@@ -270,17 +270,17 @@
 </text>
 
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
-  <line x1="190" y1="250" x2="394" y2="284" />
-  <line stroke="red" x1="388" y1="278" x2="400" y2="290" />
-  <line stroke="red" x1="388" y1="290" x2="400" y2="278" />
+  <line x1="176" y1="250" x2="380" y2="284" />
+  <line stroke="red" x1="374" y1="278" x2="386" y2="290" />
+  <line stroke="red" x1="374" y1="290" x2="386" y2="278" />
 </g>
 <text
-  x="311.64398987305356"
+  x="297.64398987305356"
   y="260.13606076167855"
   text-anchor="middle"
   dominant-baseline="middle"
   font-family="JetBrains Mono, monospace"
-  transform="rotate(9.462322208025617 311.64398987305356 260.13606076167855)"
+  transform="rotate(9.462322208025617 297.64398987305356 260.13606076167855)"
   fill="white"
   font-size="15"
 >
@@ -288,17 +288,17 @@
 </text>
 
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
-  <line x1="430" y1="290" x2="226" y2="324" />
-  <line stroke="red" x1="220" y1="318" x2="232" y2="330" />
-  <line stroke="red" x1="220" y1="330" x2="232" y2="318" />
+  <line x1="416" y1="290" x2="212" y2="324" />
+  <line stroke="red" x1="206" y1="318" x2="218" y2="330" />
+  <line stroke="red" x1="206" y1="330" x2="218" y2="318" />
 </g>
 <text
-  x="308.35601012694644"
+  x="294.35601012694644"
   y="300.13606076167855"
   text-anchor="middle"
   dominant-baseline="middle"
   font-family="JetBrains Mono, monospace"
-  transform="rotate(350.5376777919744 308.35601012694644 300.13606076167855)"
+  transform="rotate(350.5376777919744 294.35601012694644 300.13606076167855)"
   fill="white"
   font-size="15"
 >
@@ -306,47 +306,47 @@
 </text>
 
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
-  <polygon stroke="none" fill="#ffffff44" points="190,330 430,370 430,410 190,370" />
-  <line x1="190" y1="330" x2="430" y2="370" />
-  <line x1="430" y1="370" x2="419.3140658251518" y2="373.28797974610717" />
-  <line x1="430" y1="370" x2="420.9580556982053" y2="363.4240405077857" />
-  <line x1="190" y1="370" x2="430" y2="410" />
-  <line x1="430" y1="410" x2="419.3140658251518" y2="413.28797974610717" />
-  <line x1="430" y1="410" x2="420.9580556982053" y2="403.4240405077857" />
+  <polygon stroke="none" fill="#ffffff44" points="176,330 416,370 416,410 176,370" />
+  <line x1="176" y1="330" x2="416" y2="370" />
+  <line x1="416" y1="370" x2="405.3140658251518" y2="373.28797974610717" />
+  <line x1="416" y1="370" x2="406.9580556982053" y2="363.4240405077857" />
+  <line x1="176" y1="370" x2="416" y2="410" />
+  <line x1="416" y1="410" x2="405.3140658251518" y2="413.28797974610717" />
+  <line x1="416" y1="410" x2="406.9580556982053" y2="403.4240405077857" />
 </g>
 <text
-  x="311.64398987305356"
+  x="297.64398987305356"
   y="369.7278784766429"
   text-anchor="middle"
   dominant-baseline="middle"
   font-family="JetBrains Mono, monospace"
-  transform="rotate(9.462322208025617 311.64398987305356 369.7278784766429)"
-  fill="white"
-  font-size="15"
->
-  thick
-</text>
-
-<g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
-  <polygon stroke="none" fill="#ffffff44" points="430,410 190,450 190,490 430,450" />
-  <line x1="430" y1="410" x2="190" y2="450" />
-  <line x1="190" y1="450" x2="199.04194430179467" y2="443.4240405077857" />
-  <line x1="190" y1="450" x2="200.68593417484823" y2="453.28797974610717" />
-  <line x1="430" y1="450" x2="190" y2="490" />
-  <line x1="190" y1="490" x2="199.04194430179467" y2="483.4240405077857" />
-  <line x1="190" y1="490" x2="200.68593417484823" y2="493.28797974610717" />
-</g>
-<text
-  x="308.35601012694644"
-  y="449.7278784766429"
-  text-anchor="middle"
-  dominant-baseline="middle"
-  font-family="JetBrains Mono, monospace"
-  transform="rotate(350.5376777919744 308.35601012694644 449.7278784766429)"
+  transform="rotate(9.462322208025617 297.64398987305356 369.7278784766429)"
   fill="white"
   font-size="15"
 >
   thick reply
+</text>
+
+<g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
+  <polygon stroke="none" fill="#ffffff44" points="416,370 176,410 176,470 416,430" />
+  <line x1="416" y1="370" x2="176" y2="410" />
+  <line x1="176" y1="410" x2="185.04194430179467" y2="403.4240405077857" />
+  <line x1="176" y1="410" x2="186.68593417484823" y2="413.28797974610717" />
+  <line x1="416" y1="430" x2="176" y2="470" />
+  <line x1="176" y1="470" x2="185.04194430179467" y2="463.4240405077857" />
+  <line x1="176" y1="470" x2="186.68593417484823" y2="473.28797974610717" />
+</g>
+<text
+  x="294.35601012694644"
+  y="419.5918177149643"
+  text-anchor="middle"
+  dominant-baseline="middle"
+  font-family="JetBrains Mono, monospace"
+  transform="rotate(350.5376777919744 294.35601012694644 419.5918177149643)"
+  fill="white"
+  font-size="15"
+>
+  thicker reply
 </text>
 
 <text
@@ -357,9 +357,9 @@
   fill="white"
   font-size="15"
 >
-  <tspan x="180" y="170">left</tspan>
-<tspan x="180" y="188">label</tspan>
-<tspan x="180" y="206">@2</tspan>
+  <tspan x="166" y="170">left</tspan>
+<tspan x="166" y="188">label</tspan>
+<tspan x="166" y="206">@2</tspan>
 </text>
 
 <text
@@ -370,8 +370,8 @@
   fill="white"
   font-size="15"
 >
-  <tspan x="440" y="290">right</tspan>
-<tspan x="440" y="308">label</tspan>
-<tspan x="440" y="326">@5</tspan>
+  <tspan x="426" y="290">right</tspan>
+<tspan x="426" y="308">label</tspan>
+<tspan x="426" y="326">@5</tspan>
 </text>
 </svg>

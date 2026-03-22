@@ -4,18 +4,31 @@
     box-sizing: border-box;
 }
 
+:root {
+    --bg-main: #1e1e1e;
+    --bg-sidebar: #252526;
+    --bg-header: #2d2d2d;
+    --border-color: #3e3e42;
+    --text-main: #d4d4d4;
+    --text-muted: #858585;
+    --text-header: #969696;
+    --accent-color: #0e639c;
+    --accent-hover: #1177bb;
+    --header-height: 42px;
+}
+
 body {
     font-family: system-ui, -apple-system, sans-serif;
-    background: #1e1e1e;
-    color: #d4d4d4;
+    background: var(--bg-main);
+    color: var(--text-main);
     height: 100vh;
     overflow: hidden;
 }
 
 header {
-    background: #252526;
+    background: var(--bg-sidebar);
     padding: 1rem 2rem;
-    border-bottom: 1px solid #3e3e42;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-content {
@@ -26,17 +39,17 @@ header {
 
 .resizer {
     width: 6px;
-    background: #1e1e1e;
+    background: var(--bg-main);
     cursor: col-resize;
     position: relative;
     z-index: 100;
-    border-left: 1px solid #3e3e42;
-    border-right: 1px solid #3e3e42;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
     transition: background 0.2s;
 }
 
 .resizer:hover, .resizer.dragging {
-    background: #0e639c;
+    background: var(--accent-color);
 }
 
 .toggle-arrow {
@@ -44,9 +57,9 @@ header {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #2d2d2d;
-    border: 1px solid #3e3e42;
-    color: #858585;
+    background: var(--bg-header);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
     width: 20px;
     height: 40px;
     padding: 0;
@@ -74,7 +87,7 @@ header {
 
 #panel-reference {
     flex: 0 0 280px;
-    background: #252526;
+    background: var(--bg-sidebar);
     transition: flex-basis 0.3s ease-in-out;
 }
 
@@ -109,21 +122,21 @@ main {
 }
 
 .reference-content {
-    background: #252526;
+    background: var(--bg-sidebar);
     padding: 1.25rem;
     overflow-y: auto;
 }
 
 .search-container {
-    padding: 0.75rem 1.25rem;
-    background: #252526;
-    border-bottom: 1px solid #3e3e42;
+    padding: 0.6rem 1rem;
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border-color);
 }
 
 #refSearch {
     width: 100%;
     background: #3c3c3c;
-    border: 1px solid #3e3e42;
+    border: 1px solid var(--border-color);
     color: #cccccc;
     padding: 0.4rem 0.75rem;
     border-radius: 3px;
@@ -133,7 +146,7 @@ main {
 }
 
 #refSearch:focus {
-    border-color: #0e639c;
+    border-color: var(--accent-color);
 }
 
 .loading {
@@ -156,8 +169,8 @@ main {
 }
 
 .ref-item {
-    background: #2d2d2d;
-    border: 1px solid #3e3e42;
+    background: var(--bg-header);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 0.75rem;
     margin-bottom: 0.75rem;
@@ -185,13 +198,13 @@ main {
     color: #ce9178;
     border-radius: 4px;
     margin-bottom: 0.6rem;
-    border: 1px solid #3e3e42;
+    border: 1px solid var(--border-color);
 }
 
 .try-btn-small {
     background: transparent;
-    border: 1px solid #3e3e42;
-    color: #858585;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
     padding: 0.25rem 0.6rem;
     border-radius: 3px;
     font-size: 0.7rem;
@@ -211,22 +224,25 @@ main {
 }
 
 .panel-header {
-    background: #2d2d2d;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #3e3e42;
+    background: var(--bg-header);
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: var(--header-height);
 }
 
 .panel-title {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #cccccc;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-header);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .copy-btn {
-    background: #0e639c;
+    background: var(--accent-color);
     color: white;
     border: none;
     padding: 0.4rem 0.75rem;
@@ -237,7 +253,7 @@ main {
 }
 
 .copy-btn:hover {
-    background: #1177bb;
+    background: var(--accent-hover);
 }
 
 .copy-btn:active {
@@ -306,8 +322,8 @@ svg {
 }
 
 .CodeMirror-gutters {
-    background: #252526;
-    border-right: 1px solid #3e3e42;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
 }
 
 .CodeMirror-linenumber {
@@ -395,13 +411,13 @@ svg {
     list-style: none;
     margin: 0;
     padding: 2px;
-    background: #252526;
+    background: var(--bg-sidebar);
     border: 1px solid #454545;
     border-radius: 4px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
     font-size: 13px;
-    color: #d4d4d4;
+    color: var(--text-main);
     max-height: 200px;
     overflow-y: auto;
 }
