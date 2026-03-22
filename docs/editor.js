@@ -122,6 +122,7 @@ const REFERENCE_DATA = [
             { title: "Show Grid", syntax: 'def showGrid true', example: 'def showGrid true' },
             { title: "Show Time Ticks", syntax: 'def showTimeTicks true', example: 'def showTimeTicks true' },
             { title: "Time Interval", syntax: 'def timeTickInterval 40px', example: 'def timeTickInterval 40px' },
+            { title: "Time Tick Step", syntax: 'def timeTickStep 5', example: 'def timeTickStep 5' },
             { title: "Time Unit", syntax: 'def timeUnit /ms', example: 'def timeUnit /ms' }
         ]
     },

@@ -60,6 +60,7 @@ export interface Settings {
 
   showGrid: boolean;
   showTimeTicks: boolean;
+  timeTickStep: number;
   timeUnit: string;
 }
 
@@ -87,6 +88,7 @@ const DEFAULT_SETTINGS: Settings = {
 
   showGrid: false,
   showTimeTicks: false,
+  timeTickStep: 1,
   timeUnit: "",
 };
 

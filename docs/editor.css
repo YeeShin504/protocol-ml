@@ -48,7 +48,8 @@ header {
     transition: background 0.2s;
 }
 
-.resizer:hover, .resizer.dragging {
+.resizer:hover,
+.resizer.dragging {
     background: var(--accent-color);
 }
 
@@ -69,7 +70,7 @@ header {
     cursor: pointer;
     font-size: 10px;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: all 0.2s;
 }
 
@@ -358,6 +359,7 @@ svg {
 .cm-pml-alias {
     color: #4ec9b0;
 }
+
 .cm-pml-arrow-normal {
     color: #4fc1ff;
     font-weight: bold;

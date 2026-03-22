@@ -1,10 +1,10 @@
-const KEYWORDS = ["def", "participant", "true", "false"]; 
+const KEYWORDS = ["def", "participant", "true", "false"];
 const SETTINGS = [
     "arrowHeadSize", "dropCrossSize", "thickArrowThickness", "labelOffset",
     "corruptStartRatio", "dropStartRatio", "squiggleSize", "squiggleCount",
     "timeTickInterval", "participantSpacing", "participantLabelHeight",
     "annotationWidth", "participantFontSize", "messageFontSize",
-    "paddingX", "paddingY", "showGrid", "showTimeTicks", "timeUnit"
+    "paddingX", "paddingY", "showGrid", "showTimeTicks", "timeTickStep", "timeUnit"
 ];
 
 const KEYWORDS_REGEX = new RegExp(`\\b(${KEYWORDS.join('|')})\\b`);
@@ -111,7 +111,7 @@ CodeMirror.hint["protocol-ml"] = function (cm) {
         const bIsKeyword = KEYWORDS.includes(b);
         if (aIsKeyword && !bIsKeyword) return -1;
         if (!aIsKeyword && bIsKeyword) return 1;
-        
+
         return a.localeCompare(b);
     });
 

@@ -183,7 +183,8 @@ export function resolveLayout(entities: Entities): Diagram {
   });
 
   if (settings.showTimeTicks || settings.showGrid) {
-    for (let i = 0; i <= totalTicks; i++) {
+    const step = Math.max(1, settings.timeTickStep);
+    for (let i = 0; i <= totalTicks; i += step) {
       draws.push({
         type: "tick",
         y: oldHeight + settings.timeTickInterval + i * settings.timeTickInterval,
