@@ -17,7 +17,8 @@ export interface Arrow {
   start?: number;
   end?: number;
   arrowType: ArrowType;
-  thicknessRatio?: number;
+  thicknessStart?: number;
+  thicknessEnd?: number;
   label?: string;
 }
 
@@ -217,7 +218,7 @@ export function parse(src: string): Entities {
 
     // arrows
     const arrowMatch = line.match(
-      /^(\w+)(?:\s*@([\d.%px]+))?\s*(->|=>|~>|-x)(?:\[([\d.]+)\])?\s*(?:@([\d.%px]+)\s+)?(\w+)(?:\s*@([\d.%px]+))?(?:\s*:\s*"(.+)")?/
+      /^(\w+)(?:\s*@([\d.%px]+))?\s*(?:\[([\d.]+)\])?\s*(->|=>|~>|-x)(?:\[([\d.]+)\])?\s*(?:@([\d.%px]+)\s+)?(\w+)(?:\s*@([\d.%px]+))?(?:\s*:\s*"(.+)")?/
     );
 
     if (arrowMatch) {
@@ -229,15 +230,32 @@ export function parse(src: string): Entities {
         "-x": "dropped"
       };
 
+      const type = typeMap[arrowMatch[4]];
+      let tStart = arrowMatch[3] ? parseFloat(arrowMatch[3]) : undefined;
+      let tEnd = arrowMatch[5] ? parseFloat(arrowMatch[5]) : undefined;
+
+      // Rule: 
+      // [start]=>      -> end=start
+      //        =>[end] -> start=1
+      // [start]=>[end] -> start=start, end=end
+      if (type === "thick") {
+        if (tStart !== undefined && tEnd === undefined) {
+          tEnd = tStart;
+        } else if (tEnd !== undefined && tStart === undefined) {
+          tStart = 1.0;
+        }
+      }
+
       actions.push({
         type: "arrow",
         from: arrowMatch[1],
         start: arrowMatch[2] ? (parseNumber(arrowMatch[2]) ?? undefined) : undefined,
-        arrowType: typeMap[arrowMatch[3]],
-        thicknessRatio: arrowMatch[4] ? parseFloat(arrowMatch[4]) : undefined,
-        to: arrowMatch[6],
-        end: (arrowMatch[5] || arrowMatch[7]) ? (parseNumber(arrowMatch[5] || arrowMatch[7]) ?? undefined) : undefined,
-        label: arrowMatch[8]
+        arrowType: type,
+        thicknessStart: tStart,
+        thicknessEnd: tEnd,
+        to: arrowMatch[7],
+        end: (arrowMatch[6] || arrowMatch[8]) ? (parseNumber(arrowMatch[6] || arrowMatch[8]) ?? undefined) : undefined,
+        label: arrowMatch[9]
       });
 
       continue;

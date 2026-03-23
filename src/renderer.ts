@@ -110,7 +110,7 @@ function drawAnnotation(settings: Settings, annotation: AnnotationPos): string {
 }
 
 function drawArrow(settings: Settings, arrow: ArrowPos): string {
-  const { x1, y1, x2, y2, arrowType, thickness, label } = arrow;
+  const { x1, y1, x2, y2, arrowType, thicknessStart, thicknessEnd, label } = arrow;
 
   const dx = x2 - x1;
   const dy = y2 - y1;
@@ -205,15 +205,32 @@ function drawArrow(settings: Settings, arrow: ArrowPos): string {
       break;
 
     case "thick":
+      const dx_b = x2 - x1;
+      const dy_b = (y2 + thicknessEnd) - (y1 + thicknessStart);
+      const len_b = Math.hypot(dx_b, dy_b);
+      const ux_b = dx_b / len_b;
+      const uy_b = dy_b / len_b;
+      const px_b = -uy_b;
+      const py_b = ux_b;
+
+      const baseX_b = x2 - ux_b * settings.arrowHeadSize;
+      const baseY_b = (y2 + thicknessEnd) - uy_b * settings.arrowHeadSize;
+
+      const leftX_b = baseX_b + px_b * settings.arrowHeadSize * 0.5;
+      const leftY_b = baseY_b + py_b * settings.arrowHeadSize * 0.5;
+
+      const rightX_b = baseX_b - px_b * settings.arrowHeadSize * 0.5;
+      const rightY_b = baseY_b - py_b * settings.arrowHeadSize * 0.5;
+
       arrowsvg = `
 <g stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
-  <polygon stroke="none" fill="#ffffff44" points="${x1},${y1} ${x2},${y2} ${x2},${y2 + thickness} ${x1},${y1 + thickness}" />
+  <polygon stroke="none" fill="#ffffff44" points="${x1},${y1} ${x2},${y2} ${x2},${y2 + thicknessEnd} ${x1},${y1 + thicknessStart}" />
   <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />
   <line x1="${x2}" y1="${y2}" x2="${leftX}" y2="${leftY}" />
   <line x1="${x2}" y1="${y2}" x2="${rightX}" y2="${rightY}" />
-  <line x1="${x1}" y1="${y1 + thickness}" x2="${x2}" y2="${y2 + thickness}" />
-  <line x1="${x2}" y1="${y2 + thickness}" x2="${leftX}" y2="${leftY + thickness}" />
-  <line x1="${x2}" y1="${y2 + thickness}" x2="${rightX}" y2="${rightY + thickness}" />
+  <line x1="${x1}" y1="${y1 + thicknessStart}" x2="${x2}" y2="${y2 + thicknessEnd}" />
+  <line x1="${x2}" y1="${y2 + thicknessEnd}" x2="${leftX_b}" y2="${leftY_b}" />
+  <line x1="${x2}" y1="${y2 + thicknessEnd}" x2="${rightX_b}" y2="${rightY_b}" />
 </g>`;
       break;
 
@@ -240,7 +257,7 @@ function drawArrow(settings: Settings, arrow: ArrowPos): string {
 
     const lx = mx - px * offset;
     const ly = (arrowType === "thick")
-      ? my + (direction * py * thickness / 2)
+      ? my + (direction * py * (thicknessStart + thicknessEnd) / 4)
       : my - py * offset;
 
 

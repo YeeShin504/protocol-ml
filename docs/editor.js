@@ -82,11 +82,10 @@ const REFERENCE_DATA = [
         group: "Message Arrows",
         items: [
             { title: "Normal Arrow", syntax: 'a -> b : "label"', example: 'a -> b : "Request"' },
-            { title: "Thick Arrow", syntax: 'a => b : "label"', example: 'a => b : "Big Data"' },
-            { title: "Variable Thickness", syntax: 'a =>[thickness] b : "label"', example: 'a =>[0.5] b : "Thin"' },
+            { title: "Variable Thick Arrow", syntax: 'a [start]=>[end] b : "label"', example: 'a [1.5]=> b : "Big Data"' },
             { title: "Corrupt Arrow", syntax: 'a ~> b : "label"', example: 'a ~> b : "Fragmented"' },
             { title: "Dropped Message", syntax: 'a -x b : "label"', example: 'a -x b : "Timeout"' },
-            { title: "Time Offsets", syntax: 'a @1.5 -> b @1', example: 'a @1.5 -> b @1 : "Relative Time"' }
+            { title: "Time Offsets", syntax: 'a @1.5 -> b @1', example: 'a @1.5 -> b @1 : "Time Travel"' }
         ]
     },
     {
@@ -224,7 +223,7 @@ a -x b : "dropped"
 b -x a : "dropped reply"
 
 a => b : "thick reply"
-b =>[1.5] a : "thicker reply"
+b =>[1.5] a : "thicker reply (end 1.5)"
 
 a @2 < "left label @2"
 b @5 > "right label @5"`;

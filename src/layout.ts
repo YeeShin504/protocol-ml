@@ -15,7 +15,8 @@ export interface ArrowPos {
   x2: number;
   y2: number;
   arrowType: ArrowType;
-  thickness: number;
+  thicknessStart: number;
+  thicknessEnd: number;
   label?: string;
 }
 
@@ -119,11 +120,15 @@ export function resolveLayout(entities: Entities): Diagram {
           endY = action.end;
         }
 
-        const currentThicknessRatio = (action.arrowType === "thick") 
-          ? (action.thicknessRatio ?? settings.thickArrowThickness)
+        const startRatio = (action.arrowType === "thick")
+          ? (action.thicknessStart ?? settings.thickArrowThickness)
           : 0;
-        
-        const thickness = currentThicknessRatio * settings.timeTickInterval;
+        const endRatio = (action.arrowType === "thick")
+          ? (action.thicknessEnd ?? settings.thickArrowThickness)
+          : 0;
+
+        const thicknessStart = startRatio * settings.timeTickInterval;
+        const thicknessEnd = endRatio * settings.timeTickInterval;
 
         draws.push({
           type: action.type,
@@ -132,11 +137,12 @@ export function resolveLayout(entities: Entities): Diagram {
           x2: participantsX.get(action.to),
           y2: height + endY * settings.timeTickInterval,
           arrowType: action.arrowType,
-          thickness,
+          thicknessStart,
+          thicknessEnd,
           label: action.label,
         });
 
-        counterMax = Math.max(counterMax, startY + currentThicknessRatio, endY + currentThicknessRatio);
+        counterMax = Math.max(counterMax, startY + startRatio, endY + endRatio);
         counter++;
         break;
 
