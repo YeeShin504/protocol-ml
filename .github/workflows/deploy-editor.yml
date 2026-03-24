@@ -6,6 +6,11 @@ on:
       - master
       - dev
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,23 +28,17 @@ jobs:
         run: npm install
 
       - name: Build interactive editor
-        run: npm run build:docs
+        run: |
+          if [ "${{ github.ref_name }}" == "dev" ]; then
+            npm run build:docs -- --dist-dir dist/dev
+          else
+            npm run build:docs -- --dist-dir dist
+          fi
 
-      - name: Deploy to GitHub Pages (master)
-        if: github.ref == 'refs/heads/master'
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
-          publish_branch: gh-pages
-          keep_files: true
+          path: ./dist
 
-      - name: Deploy to GitHub Pages (dev)
-        if: github.ref == 'refs/heads/dev'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
-          destination_dir: dev
-          publish_branch: gh-pages
-          keep_files: true
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
