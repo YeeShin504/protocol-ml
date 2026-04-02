@@ -15,6 +15,8 @@ export interface ArrowPos {
   x2: number;
   y2: number;
   arrowType: ArrowType;
+  thicknessStart: number;
+  thicknessEnd: number;
   label?: string;
 }
 
@@ -49,14 +51,37 @@ export interface Diagram {
 export function resolveLayout(entities: Entities): Diagram {
   const { settings, participants, actions, numAnnotations } = entities;
 
-  // 1. check if need extra spacing for annotations
-  let timeTickMargin = settings.showTimeTicks ? 60 : 0;
-  let annMargin = numAnnotations > 0 ? settings.annotationWidth : 0;
+  // 1. Calculate horizontal positions
+  const timeUnitLabel = settings.showTimeTicks ? `Time ${settings.timeUnit}` : "";
+  const timeAxisHeaderHalfWidth = timeUnitLabel.length * settings.participantFontSize * 0.3;
   
-  let timeAxisX = settings.paddingX + timeTickMargin;
-  let startX = timeAxisX + (settings.showTimeTicks ? 20 : 0) + annMargin;
+  const firstParticipantName = participants[0]?.name || "";
+  const firstParticipantHalfWidth = firstParticipantName.length * settings.participantFontSize * 0.3;
 
-  let width = startX + settings.participantSpacing * (participants.length - 1) + annMargin + settings.paddingX;
+  // Distance from the time axis header label to the left is fixed at paddingX.
+  // We use max(halfWidth, 40) to also leave room for tick labels like "100" if the unit is short.
+  const timeAxisX = settings.paddingX + Math.max(timeAxisHeaderHalfWidth, 40);
+  
+  const textBuffer = 20; // minimal gap between text labels
+  const headerOverlapGap = timeAxisHeaderHalfWidth + firstParticipantHalfWidth + textBuffer;
+  const annSpace = numAnnotations > 0 ? (settings.annotationWidth + settings.labelOffset) : 0;
+
+  // Distance from axis line to first lifeline.
+  const axisLineToParticipantGap = settings.showTimeTicks 
+    ? Math.max(headerOverlapGap, annSpace)
+    : (20 + annSpace);
+
+  const startX = settings.showTimeTicks 
+    ? timeAxisX + axisLineToParticipantGap
+    : settings.paddingX + axisLineToParticipantGap;
+
+  const lastParticipantX = startX + settings.participantSpacing * (participants.length - 1);
+  const lastParticipantName = participants[participants.length - 1]?.name || "";
+  const lastParticipantHalfWidth = lastParticipantName.length * settings.participantFontSize * 0.3;
+
+  // Total width calculation
+  const rightBuffer = Math.max(lastParticipantHalfWidth, annSpace);
+  const width = lastParticipantX + rightBuffer + settings.paddingX;
 
   // 2. figure out top spacing for participant label and padding
 
@@ -85,15 +110,25 @@ export function resolveLayout(entities: Entities): Diagram {
         let startY = counter;
         let endY = counter + 1;
 
-        if (action.start) {
+        if (action.start !== undefined) {
           counter = action.start;
           startY = counter;
           endY = counter + 1;
         }
 
-        if (action.end) {
+        if (action.end !== undefined) {
           endY = action.end;
         }
+
+        const startRatio = (action.arrowType === "thick")
+          ? (action.thicknessStart ?? settings.thickArrowThickness)
+          : 0;
+        const endRatio = (action.arrowType === "thick")
+          ? (action.thicknessEnd ?? settings.thickArrowThickness)
+          : 0;
+
+        const thicknessStart = startRatio * settings.timeTickInterval;
+        const thicknessEnd = endRatio * settings.timeTickInterval;
 
         draws.push({
           type: action.type,
@@ -102,18 +137,19 @@ export function resolveLayout(entities: Entities): Diagram {
           x2: participantsX.get(action.to),
           y2: height + endY * settings.timeTickInterval,
           arrowType: action.arrowType,
+          thicknessStart,
+          thicknessEnd,
           label: action.label,
         });
 
-        const thicknessRatio = action.arrowType === "thick" ? settings.thickArrowThickness / settings.timeTickInterval : 0;
-        counterMax = Math.max(counterMax, startY + thicknessRatio, endY + thicknessRatio);
-        counter = endY + thicknessRatio;
+        counterMax = Math.max(counterMax, startY + startRatio, endY + endRatio);
+        counter++;
         break;
 
       case "annotation":
         // @ positioning should just position and nothing else
         let y = counter;
-        if (action.height) {
+        if (action.height !== undefined) {
           y = action.height;
         }
 
@@ -153,7 +189,8 @@ export function resolveLayout(entities: Entities): Diagram {
   });
 
   if (settings.showTimeTicks || settings.showGrid) {
-    for (let i = 0; i <= totalTicks; i++) {
+    const step = Math.max(1, settings.timeTickStep);
+    for (let i = 0; i <= totalTicks; i += step) {
       draws.push({
         type: "tick",
         y: oldHeight + settings.timeTickInterval + i * settings.timeTickInterval,

@@ -20,14 +20,14 @@ function initResizer(resizer, leftPanel, rightPanel, isFirst) {
 
     resizer.addEventListener('mousedown', (e) => {
         if (e.target.id === 'toggleReference') return;
-        
+
         startX = e.clientX;
         startWidthLeft = leftPanel.offsetWidth;
         startWidthRight = rightPanel.offsetWidth;
-        
+
         // Disable transitions during resizing to prevent lag
         leftPanel.style.transition = 'none';
-        
+
         const onMouseMove = (e) => {
             const deltaX = e.clientX - startX;
             if (isFirst) {
@@ -46,10 +46,10 @@ function initResizer(resizer, leftPanel, rightPanel, isFirst) {
             document.removeEventListener('mouseup', onMouseUp);
             resizer.classList.remove('dragging');
             document.body.style.cursor = 'default';
-            
+
             // Re-enable transition after resizing
             leftPanel.style.transition = '';
-            
+
             if (editor) editor.refresh();
         };
 
@@ -72,39 +72,39 @@ const REFERENCE_DATA = [
     {
         group: "Participants",
         items: [
-            { title: "Define Participant", syntax: 'participant Name alias', example: 'participant Client c\nparticipant Server s' },
-            { title: "Participant Spacing", syntax: 'def participantSpacing 240px', example: 'def participantSpacing 300px' },
-            { title: "Label Height", syntax: 'def participantLabelHeight 30px', example: 'def participantLabelHeight 50px' },
-            { title: "Font Size", syntax: 'def participantFontSize 20px', example: 'def participantFontSize 24px' }
+            { title: "Define Participant", syntax: 'participant Name alias', example: 'participant Client c' },
+            { title: "Participant Spacing", syntax: 'def participantSpacing 240px', example: 'def participantSpacing 240px' },
+            { title: "Label Height", syntax: 'def participantLabelHeight 30px', example: 'def participantLabelHeight 30px' },
+            { title: "Font Size", syntax: 'def participantFontSize 20px', example: 'def participantFontSize 20px' }
         ]
     },
     {
         group: "Message Arrows",
         items: [
             { title: "Normal Arrow", syntax: 'a -> b : "label"', example: 'a -> b : "Request"' },
-            { title: "Thick Arrow", syntax: 'a => b : "label"', example: 'a => b : "Big Data"' },
+            { title: "Variable Thick Arrow", syntax: 'a [start]=>[end] b : "label"', example: 'a [1.5]=> b : "Big Data"' },
             { title: "Corrupt Arrow", syntax: 'a ~> b : "label"', example: 'a ~> b : "Fragmented"' },
             { title: "Dropped Message", syntax: 'a -x b : "label"', example: 'a -x b : "Timeout"' },
-            { title: "Time Offsets", syntax: 'a @1.5 -> b @1', example: 'a @1.5 -> b @1 : "Relative Time"' }
+            { title: "Time Offsets", syntax: 'a @1.5 -> b @1', example: 'a @1.5 -> b @1 : "Time Travel"' }
         ]
     },
     {
         group: "Arrow Styles",
         items: [
-            { title: "Arrow Head Size", syntax: 'def arrowHeadSize 10px', example: 'def arrowHeadSize 15px' },
-            { title: "Thick Thickness", syntax: 'def thickArrowThickness 40px', example: 'def thickArrowThickness 20px' },
-            { title: "Label Offset", syntax: 'def labelOffset 10px', example: 'def labelOffset 20px' },
-            { title: "Message Font Size", syntax: 'def messageFontSize 15px', example: 'def messageFontSize 18px' }
+            { title: "Arrow Head Size", syntax: 'def arrowHeadSize 10px', example: 'def arrowHeadSize 10px' },
+            { title: "Thick Ratio", syntax: 'def thickArrowThickness 1.0', example: 'def thickArrowThickness 1.0' },
+            { title: "Label Offset", syntax: 'def labelOffset 10px', example: 'def labelOffset 10px' },
+            { title: "Message Font Size", syntax: 'def messageFontSize 15px', example: 'def messageFontSize 15px' }
         ]
     },
     {
         group: "Corrupt & Dropped",
         items: [
-            { title: "Corrupt Start %", syntax: 'def corruptStartRatio 85%', example: 'def corruptStartRatio 50%' },
-            { title: "Drop Start %", syntax: 'def dropStartRatio 85%', example: 'def dropStartRatio 50%' },
-            { title: "Drop Cross Size", syntax: 'def dropCrossSize 12px', example: 'def dropCrossSize 20px' },
-            { title: "Corrupt Squiggle Size", syntax: 'def squiggleSize 20px', example: 'def squiggleSize 10px' },
-            { title: "Corrupt Squiggle Count", syntax: 'def squiggleCount 2', example: 'def squiggleCount 5' }
+            { title: "Corrupt Start %", syntax: 'def corruptStartRatio 85%', example: 'def corruptStartRatio 85%' },
+            { title: "Drop Start %", syntax: 'def dropStartRatio 85%', example: 'def dropStartRatio 85%' },
+            { title: "Drop Cross Size", syntax: 'def dropCrossSize 12px', example: 'def dropCrossSize 12px' },
+            { title: "Corrupt Squiggle Size", syntax: 'def squiggleSize 20px', example: 'def squiggleSize 20px' },
+            { title: "Corrupt Squiggle Count", syntax: 'def squiggleCount 2', example: 'def squiggleCount 2' }
         ]
     },
     {
@@ -112,7 +112,7 @@ const REFERENCE_DATA = [
         items: [
             { title: "Left Note", syntax: 'a < "text"', example: 'a < "Local check"' },
             { title: "Right Note", syntax: 'a > "text"', example: 'a > "Processing"' },
-            { title: "Annotation Width", syntax: 'def annotationWidth 80px', example: 'def annotationWidth 120px' }
+            { title: "Annotation Width", syntax: 'def annotationWidth 80px', example: 'def annotationWidth 80px' }
         ]
     },
     {
@@ -120,15 +120,16 @@ const REFERENCE_DATA = [
         items: [
             { title: "Show Grid", syntax: 'def showGrid true', example: 'def showGrid true' },
             { title: "Show Time Ticks", syntax: 'def showTimeTicks true', example: 'def showTimeTicks true' },
-            { title: "Time Interval", syntax: 'def timeTickInterval 40px', example: 'def timeTickInterval 60px' },
+            { title: "Time Interval", syntax: 'def timeTickInterval 40px', example: 'def timeTickInterval 40px' },
+            { title: "Time Tick Step", syntax: 'def timeTickStep 5', example: 'def timeTickStep 5' },
             { title: "Time Unit", syntax: 'def timeUnit /ms', example: 'def timeUnit /ms' }
         ]
     },
     {
         group: "Layout",
         items: [
-            { title: "Horizontal Padding", syntax: 'def paddingX 30px', example: 'def paddingX 50px' },
-            { title: "Vertical Padding", syntax: 'def paddingY 20px', example: 'def paddingY 50px' }
+            { title: "Horizontal Padding", syntax: 'def paddingX 30px', example: 'def paddingX 30px' },
+            { title: "Vertical Padding", syntax: 'def paddingY 20px', example: 'def paddingY 20px' }
         ]
     }
 ];
@@ -141,8 +142,8 @@ function renderReference(filter = '') {
     const query = filter.toLowerCase().trim();
 
     REFERENCE_DATA.forEach(group => {
-        const filteredItems = group.items.filter(item => 
-            item.title.toLowerCase().includes(query) || 
+        const filteredItems = group.items.filter(item =>
+            item.title.toLowerCase().includes(query) ||
             item.syntax.toLowerCase().includes(query) ||
             group.group.toLowerCase().includes(query)
         );
@@ -152,23 +153,23 @@ function renderReference(filter = '') {
         const groupEl = document.createElement('div');
         groupEl.className = 'ref-group';
         groupEl.innerHTML = `<h4>${group.group}</h4>`;
-        
+
         const itemsContainer = document.createElement('div');
         itemsContainer.className = 'group-items';
 
         filteredItems.forEach(item => {
             const itemEl = document.createElement('div');
             itemEl.className = 'ref-item';
-            
+
             const titleEl = document.createElement('div');
             titleEl.className = 'ref-title';
             titleEl.textContent = item.title;
-            
+
             const codeEl = document.createElement('code');
             codeEl.className = 'ref-syntax';
             // Use the editor engine to highlight this static snippet!
             CodeMirror.runMode(item.syntax, 'protocol-ml', codeEl);
-            
+
             const btn = document.createElement('button');
             btn.className = 'try-btn-small';
             btn.textContent = 'Try it';
@@ -221,13 +222,13 @@ b ~> a : "corrupted reply"
 a -x b : "dropped"
 b -x a : "dropped reply"
 
-a => b : "thick"
-b => a : "thick reply"
+a => b : "thick reply"
+b =>[1.5] a : "thicker reply (end 1.5)"
 
 a @2 < "left label @2"
 b @5 > "right label @5"`;
 
-CodeMirror.commands.autocomplete = function(cm) {
+CodeMirror.commands.autocomplete = function (cm) {
     cm.showHint({ hint: CodeMirror.hint["protocol-ml"] });
 };
 

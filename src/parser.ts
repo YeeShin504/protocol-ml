@@ -17,6 +17,8 @@ export interface Arrow {
   start?: number;
   end?: number;
   arrowType: ArrowType;
+  thicknessStart?: number;
+  thicknessEnd?: number;
   label?: string;
 }
 
@@ -59,13 +61,14 @@ export interface Settings {
 
   showGrid: boolean;
   showTimeTicks: boolean;
+  timeTickStep: number;
   timeUnit: string;
 }
 
 const DEFAULT_SETTINGS: Settings = {
   arrowHeadSize: 10,
   dropCrossSize: 12,
-  thickArrowThickness: 40,
+  thickArrowThickness: 1.0,
   labelOffset: 10,
   corruptStartRatio: 0.85,
   dropStartRatio: 0.85,
@@ -86,6 +89,7 @@ const DEFAULT_SETTINGS: Settings = {
 
   showGrid: false,
   showTimeTicks: false,
+  timeTickStep: 1,
   timeUnit: "",
 };
 
@@ -214,7 +218,7 @@ export function parse(src: string): Entities {
 
     // arrows
     const arrowMatch = line.match(
-      /^(\w+)(?:\s*@([\d.%px]+))?\s*(->|=>|~>|-x)\s*(\w+)(?:\s*@([\d.%px]+))?(?:\s*:\s*"(.+)")?/
+      /^(\w+)(?:\s*@([\d.%px]+))?\s*(?:\[([\d.]+)\])?\s*(->|=>|~>|-x)(?:\[([\d.]+)\])?\s*(?:@([\d.%px]+)\s+)?(\w+)(?:\s*@([\d.%px]+))?(?:\s*:\s*"(.+)")?/
     );
 
     if (arrowMatch) {
@@ -226,14 +230,32 @@ export function parse(src: string): Entities {
         "-x": "dropped"
       };
 
+      const type = typeMap[arrowMatch[4]];
+      let tStart = arrowMatch[3] ? parseFloat(arrowMatch[3]) : undefined;
+      let tEnd = arrowMatch[5] ? parseFloat(arrowMatch[5]) : undefined;
+
+      // Rule: 
+      // [start]=>      -> end=start
+      //        =>[end] -> start=1
+      // [start]=>[end] -> start=start, end=end
+      if (type === "thick") {
+        if (tStart !== undefined && tEnd === undefined) {
+          tEnd = tStart;
+        } else if (tEnd !== undefined && tStart === undefined) {
+          tStart = 1.0;
+        }
+      }
+
       actions.push({
         type: "arrow",
         from: arrowMatch[1],
         start: arrowMatch[2] ? (parseNumber(arrowMatch[2]) ?? undefined) : undefined,
-        arrowType: typeMap[arrowMatch[3]],
-        to: arrowMatch[4],
-        end: arrowMatch[5] ? (parseNumber(arrowMatch[5]) ?? undefined) : undefined,
-        label: arrowMatch[6]
+        arrowType: type,
+        thicknessStart: tStart,
+        thicknessEnd: tEnd,
+        to: arrowMatch[7],
+        end: (arrowMatch[6] || arrowMatch[8]) ? (parseNumber(arrowMatch[6] || arrowMatch[8]) ?? undefined) : undefined,
+        label: arrowMatch[9]
       });
 
       continue;

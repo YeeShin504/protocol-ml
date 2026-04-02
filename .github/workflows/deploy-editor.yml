@@ -6,39 +6,48 @@ on:
       - master
       - dev
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "24"
+          node-version: 24
+          cache: npm
 
       - name: Install dependencies
         run: npm install
 
       - name: Build interactive editor
-        run: npm run build:docs
+        run: |
+          if [ "${{ github.ref_name }}" == "dev" ]; then
+            npm run build:docs -- --dist-dir dist/dev
+          else
+            npm run build:docs -- --dist-dir dist
+          fi
 
-      - name: Deploy to GitHub Pages (master)
-        if: github.ref == 'refs/heads/master'
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
-          publish_branch: gh-pages
-          keep_files: true
+          path: ./dist
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-      - name: Deploy to GitHub Pages (dev)
-        if: github.ref == 'refs/heads/dev'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
-          destination_dir: dev
-          publish_branch: gh-pages
-          keep_files: true
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
